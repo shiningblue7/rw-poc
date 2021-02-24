@@ -1,9 +1,8 @@
-import StandardLayout from "src/layouts/StandardLayout/StandardLayout";
+import { Link, Route, routes } from '@redwoodjs/router'
 
-export default () => (
-  <StandardLayout>
-  <main>
-    <style
+const StandardLayout = ({ children }) => {
+  return (<>
+  <style
       dangerouslySetInnerHTML={{
         __html: `
               html, body {
@@ -12,11 +11,21 @@ export default () => (
               html * {
                 box-sizing: border-box;
               }
+              nav > * {
+                display:inline;
+              }
+              nav > ul {
+                float: right;
+              }
+              nav > ul > li {
+                display: inline;
+                padding: 1rem;
+              }
               main {
                 display: flex;
                 align-items: center;
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-                text-align: center;
+                text-align: left;
                 background-color: #E2E8F0;
                 height: 100vh;
               }
@@ -38,11 +47,19 @@ export default () => (
             `,
       }}
     />
-    <section>
-      <h1>
-        <span>404 Page Not Found</span>
-      </h1>
-    </section>
-  </main>
-  </StandardLayout>
-)
+
+  <nav>
+    <h1>RW-POC</h1>
+    <ul>
+    <li><Link to={routes.home()}>Home</Link></li>
+    <li><Link to={routes.tickets()}>Tickets</Link></li>
+    <li><Link to={routes.users()}>Users</Link></li>
+    </ul>
+  </nav>
+  <div>
+    {children}
+  </div>
+  </>)
+}
+
+export default StandardLayout
