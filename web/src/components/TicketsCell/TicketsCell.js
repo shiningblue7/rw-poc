@@ -9,6 +9,9 @@ export const QUERY = gql`
       number
       title
       userId
+      User {
+        name
+      }
     }
   }
 `

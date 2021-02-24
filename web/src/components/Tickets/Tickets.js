@@ -55,7 +55,6 @@ const TicketsList = ({ tickets }) => {
       deleteTicket({ variables: { id } })
     }
   }
-
   return (
     <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
@@ -65,6 +64,7 @@ const TicketsList = ({ tickets }) => {
             <th>Number</th>
             <th>Title</th>
             <th>User id</th>
+            <th>User</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -75,6 +75,7 @@ const TicketsList = ({ tickets }) => {
               <td>{truncate(ticket.number)}</td>
               <td>{truncate(ticket.title)}</td>
               <td>{truncate(ticket.userId)}</td>
+              <td>{truncate(ticket.User.name)}</td>
               <td>
                 <nav className="rw-table-actions">
                   <Link
