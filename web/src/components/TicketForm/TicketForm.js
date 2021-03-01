@@ -22,23 +22,6 @@ const TicketForm = (props) => {
           titleClassName="rw-form-error-title"
           listClassName="rw-form-error-list"
         />
-
-        <Label
-          name="number"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Number
-        </Label>
-        <TextField
-          name="number"
-          defaultValue={props.ticket?.number}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
-        <FieldError name="number" className="rw-field-error" />
-
         <Label
           name="title"
           className="rw-label"
