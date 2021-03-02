@@ -1,4 +1,5 @@
 import { db } from 'src/lib/db'
+import * as fs from 'fs'
 import { runRules } from 'src/lib/rules/insert';
 
 export const tickets = () => {
