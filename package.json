@@ -5,7 +5,7 @@
       "api",
       "web",
       "packages/*",
-      "fs"
+      "fs/promises"
     ]
   },
   "devDependencies": {
