@@ -5,7 +5,7 @@ import rules from 'src/rules/tickets/**.{js,ts}'
 console.log(`rules`, rules);
 let rulesArr = Object.keys(rules).map((k) => rules[k])//from obj to arr of objs
 rulesArr.sort((a,b) => a.order-b.order );//order rules asc
-//filter out inactive rules
+//filter out inactive rules//tbd
 console.log(`rulesArr`, rulesArr);
 
 
