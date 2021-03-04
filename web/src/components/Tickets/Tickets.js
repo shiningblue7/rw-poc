@@ -60,10 +60,8 @@ const TicketsList = ({ tickets }) => {
       <table className="rw-table">
         <thead>
           <tr>
-            <th>Id</th>
             <th>Number</th>
             <th>Title</th>
-            <th>User id</th>
             <th>User</th>
             <th>&nbsp;</th>
           </tr>
@@ -71,11 +69,9 @@ const TicketsList = ({ tickets }) => {
         <tbody>
           {tickets.map((ticket) => (
             <tr key={ticket.id}>
-              <td>{truncate(ticket.id)}</td>
               <td>{truncate(ticket.number)}</td>
               <td>{truncate(ticket.title)}</td>
-              <td>{truncate(ticket.userId)}</td>
-              <td>{truncate(ticket.User.name)}</td>
+              <td><div title={truncate(ticket.userId)}>{truncate(ticket.User.name)}</div></td>
               <td>
                 <nav className="rw-table-actions">
                   <Link

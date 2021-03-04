@@ -1,7 +1,7 @@
 export const schema = gql`
   type Ticket {
     id: Int!
-    number: String!
+    number: String
     title: String
     User: User
     userId: Int
@@ -10,10 +10,11 @@ export const schema = gql`
   type Query {
     tickets: [Ticket!]!
     ticket(id: Int!): Ticket
+    lastTicket: Ticket
   }
 
   input CreateTicketInput {
-    number: String!
+    number: String
     title: String
     userId: Int
   }
