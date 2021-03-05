@@ -10,5 +10,6 @@ module.exports = {
       return current;
   },
   active: true,
-  order: 12
+  order: 12,
+  title: "append date"
 }

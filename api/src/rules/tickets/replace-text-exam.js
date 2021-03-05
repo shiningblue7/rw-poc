@@ -13,5 +13,6 @@ module.exports = {
       return current;
   },
   active: true,
-  order: 10
+  order: 10,
+  title: "make jace's name correct"
 }
