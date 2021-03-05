@@ -10,7 +10,6 @@ export const schema = gql`
   type Query {
     tickets: [Ticket!]!
     ticket(id: Int!): Ticket
-    lastTicket: Ticket
   }
 
   input CreateTicketInput {
