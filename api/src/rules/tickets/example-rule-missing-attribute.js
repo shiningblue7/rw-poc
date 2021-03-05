@@ -10,6 +10,6 @@ module.exports = {
       return current;
   },
   active: true,
-  order: 12,
-  title: "append date"
+  title: "append date 2",
+  file: __filename
 }
