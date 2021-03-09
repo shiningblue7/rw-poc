@@ -1,7 +1,6 @@
 import { db } from 'src/lib/db'
 import * as util from 'src/lib/util'
 import rules from 'src/rules/tickets/**.{js,ts}'
-console.log(`rules`, rules)
 let beforeRulesArr = util.loadRules(rules, "before");
 let afterRulesArr = util.loadRules(rules, "after");
 //util.log(`rulesArr`, rulesArr)
@@ -33,14 +32,9 @@ export const createTicket = async ({ input }) => {
     }
     util.log(`Ending Before ${rule.title}`)
   })
-  /*return db.ticket.create({
-    data: input,
-  })
-  */
   let update = db.ticket.create({
     data: input,
   })
-  //run after rules
   afterRulesArr.forEach((rule)=>{
     util.log(`Starting After ${rule.title} ${rule.order}`)
     let previous = JSON.stringify(input)
