@@ -8,10 +8,8 @@ let _log = (message, type)=>{
 export const loadRules = (rules, when) => {
   let rulesArr = Object.keys(rules).map((k) => rules[k])//from obj to arr of objs
 rulesArr.sort((a,b) => a.order-b.order );//order rules asc
-//filter out inactive rules//tbd
 rulesArr = rulesArr.filter((rule)=>{
-  //remove inactive rules, and rules missing title, command, order, active
-  if((
+  if((//remove inactive rules, and rules missing title, command, order, active
     rule.hasOwnProperty('title') &&
     rule.hasOwnProperty('order') &&
     rule.hasOwnProperty('when') &&
