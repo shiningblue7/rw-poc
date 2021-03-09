@@ -18,5 +18,6 @@ module.exports = {
   active: true,
   order: 10,
   title: "make jace's name correct",
+  when: "before",
   file: __filename
 }

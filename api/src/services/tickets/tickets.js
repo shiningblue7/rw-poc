@@ -1,7 +1,9 @@
 import { db } from 'src/lib/db'
 import * as util from 'src/lib/util'
 import rules from 'src/rules/tickets/**.{js,ts}'
-let rulesArr = util.loadRules(rules);
+console.log(`rules`, rules)
+let beforeRulesArr = util.loadRules(rules, "before");
+let afterRulesArr = util.loadRules(rules, "after");
 //util.log(`rulesArr`, rulesArr)
 
 export const tickets = () => {
@@ -17,8 +19,8 @@ export const ticket = ({ id }) => {
 export const createTicket = async ({ input }) => {
   var lastTicket = await db.ticket.findFirst({orderBy: [{number: 'desc'}],});
   input.number = (parseInt(lastTicket.number,10)+1).toString()
-  rulesArr.forEach((rule)=>{
-    util.log(`Starting ${rule.title} ${rule.order}`)
+  beforeRulesArr.forEach((rule)=>{
+    util.log(`Starting Before ${rule.title} ${rule.order}`)
     let previous = JSON.stringify(input)
     previous = JSON.parse(previous)
     rule.command(input);
@@ -29,11 +31,31 @@ export const createTicket = async ({ input }) => {
         }
       }
     }
-    util.log(`Ending ${rule.title}`)
+    util.log(`Ending Before ${rule.title}`)
   })
-  return db.ticket.create({
+  /*return db.ticket.create({
     data: input,
   })
+  */
+  let update = db.ticket.create({
+    data: input,
+  })
+  //run after rules
+  afterRulesArr.forEach((rule)=>{
+    util.log(`Starting After ${rule.title} ${rule.order}`)
+    let previous = JSON.stringify(input)
+    previous = JSON.parse(previous)
+    rule.command(input);
+    if(previous !== input){
+      for (var prop in input){
+        if(previous[prop] !== input[prop]){
+        util.log(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
+        }
+      }
+    }
+    util.log(`Ending After ${rule.title}`)
+  })
+  return update;
 }
 
 export const updateTicket = ({ id, input }) => {

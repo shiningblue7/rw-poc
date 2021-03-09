@@ -11,5 +11,6 @@ module.exports = {
   },
   active: true,
   title: "append date 2",
+  when: "before",
   file: __filename
 }

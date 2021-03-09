@@ -5,7 +5,7 @@ let _log = (message, type)=>{
   }
 }
 
-export const loadRules = (rules) => {
+export const loadRules = (rules, when) => {
   let rulesArr = Object.keys(rules).map((k) => rules[k])//from obj to arr of objs
 rulesArr.sort((a,b) => a.order-b.order );//order rules asc
 //filter out inactive rules//tbd
@@ -14,6 +14,7 @@ rulesArr = rulesArr.filter((rule)=>{
   if((
     rule.hasOwnProperty('title') &&
     rule.hasOwnProperty('order') &&
+    rule.hasOwnProperty('when') &&
     rule.hasOwnProperty('command') &&
     rule.hasOwnProperty('active') &&
     rule.hasOwnProperty('file')) === false ){
@@ -21,6 +22,13 @@ rulesArr = rulesArr.filter((rule)=>{
     return false
   }
   return rule.active === true
+})
+rulesArr = rulesArr.filter((rule)=>{
+  if(rule.when == when){
+    return true;
+  } else {
+    return false;
+  }
 })
 return rulesArr;
 }
