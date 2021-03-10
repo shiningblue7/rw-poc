@@ -54,8 +54,12 @@ const StandardLayout = ({ children }) => {
     <h1>RW-POC</h1>
     <ul>
       <li><Link to={routes.home()}>Home</Link></li>
-      <li><Link to={routes.tickets()}>Tickets</Link></li>
-      <li><Link to={routes.users()}>Users</Link></li>
+      <li><Link to={routes.tickets()}>No auth Tickets</Link></li>
+      <li><Link to={routes.users()}>No auth Users</Link></li>
+      {isAuthenticated && <>
+      <li><Link to={routes.listtickets()}>Auth Tickets</Link></li>
+      <li><Link to={routes.listusers()}>Auth Users</Link></li></>
+      }
       <li>
         <button onClick={isAuthenticated ? logOut : logIn}>
           {isAuthenticated ? 'Log Out' : 'Log In'}

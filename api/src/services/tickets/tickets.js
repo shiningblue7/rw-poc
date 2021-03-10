@@ -7,12 +7,10 @@ let afterRulesArr = util.loadRules(rules, "after");
 //util.log(`rulesArr`, rulesArr)
 
 export const tickets = () => {
-  requireAuth()
   return db.ticket.findMany()
 }
 
 export const ticket = ({ id }) => {
-  requireAuth()
   return db.ticket.findUnique({
     where: { id },
   })
