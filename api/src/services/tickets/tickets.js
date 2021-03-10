@@ -17,7 +17,6 @@ export const ticket = ({ id }) => {
 }
 
 export const createTicket = async ({ input }) => {
-  requireAuth()
   var lastTicket = await db.ticket.findFirst({orderBy: [{number: 'desc'}],});
   input.number = (parseInt(lastTicket.number,10)+1).toString()
   beforeRulesArr.forEach((rule)=>{

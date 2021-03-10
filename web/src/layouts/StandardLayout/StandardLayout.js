@@ -4,7 +4,41 @@ import { useAuth } from '@redwoodjs/auth'
 const StandardLayout = ({ children }) => {
   const { logIn, logOut, isAuthenticated, currentUser } = useAuth()
   return (<>
-  <style
+
+
+  <nav>
+    <h1>RW-POC</h1>
+    <ul>
+      <li><Link to={routes.home()}>Home</Link></li>
+      <li><Link to={routes.tickets()}>No auth Tickets</Link></li>
+      <li><Link to={routes.users()}>No auth Users</Link></li>
+      <li><Link to={routes.testPublic()}>Test</Link></li>
+      {isAuthenticated && <>
+      <li><Link to={routes.listTickets()}>Auth Tickets</Link></li>
+      <li><Link to={routes.listUsers()}>Auth Users</Link></li>
+      <li><Link to={routes.adminHome()}>Auth Home</Link></li>
+      <li><Link to={routes.test()}>Auth Test</Link></li>
+      </>
+      }
+      <li>
+        <button onClick={isAuthenticated ? logOut : logIn}>
+          <p title={JSON.stringify(currentUser)}>
+          {isAuthenticated ? `Log Out ${currentUser.name || currentUser.email}` : 'Log In'}
+          </p>
+        </button>
+      </li>
+    </ul>
+  </nav>
+  <div>
+    {children}
+  </div>
+  </>)
+}
+
+export default StandardLayout
+
+/**
+ *   <style
       dangerouslySetInnerHTML={{
         __html: `
               html, body {
@@ -49,32 +83,4 @@ const StandardLayout = ({ children }) => {
             `,
       }}
     />
-
-  <nav>
-    <h1>RW-POC</h1>
-    <ul>
-      <li><Link to={routes.home()}>Home</Link></li>
-      <li><Link to={routes.tickets()}>No auth Tickets</Link></li>
-      <li><Link to={routes.users()}>No auth Users</Link></li>
-      {isAuthenticated && <>
-      <li><Link to={routes.listTickets()}>Auth Tickets</Link></li>
-      <li><Link to={routes.listUsers()}>Auth Users</Link></li>
-      <li><Link to={routes.adminHome()}>Auth Home</Link></li>
-      </>
-      }
-      <li>
-        <button onClick={isAuthenticated ? logOut : logIn}>
-          <p title={JSON.stringify(currentUser)}>
-          {isAuthenticated ? `Log Out ${currentUser.name || currentUser.email}` : 'Log In'}
-          </p>
-        </button>
-      </li>
-    </ul>
-  </nav>
-  <div>
-    {children}
-  </div>
-  </>)
-}
-
-export default StandardLayout
+ */
