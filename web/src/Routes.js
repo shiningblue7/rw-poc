@@ -23,9 +23,9 @@ const Routes = () => {
         <Route path="/users/{id:Int}/edit" page={EditUserPage} name="editUser" />
         <Route path="/users/{id:Int}" page={UserPage} name="user" />
         <Route path="/users" page={UsersPage} name="users" />
-        <Private>
 
-          <Route path="/admin/home" page={TicketsPage} name="adminHome" />
+        <Private unauthenticated="home">
+          <Route path="/admin/home" page={HomePage} name="adminHome" />
           <Route path="/list/tickets" page={TicketsPage} name="listTickets" />
           <Route path="/list/users" page={UsersPage} name="listUsers" />
         </Private>

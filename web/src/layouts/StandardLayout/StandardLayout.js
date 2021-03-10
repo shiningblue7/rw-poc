@@ -64,10 +64,11 @@ const StandardLayout = ({ children }) => {
       }
       <li>
         <button onClick={isAuthenticated ? logOut : logIn}>
-          {isAuthenticated ? 'Log Out' : 'Log In'}
+          <p title={JSON.stringify(currentUser)}>
+          {isAuthenticated ? `Log Out ${currentUser.name || currentUser.email}` : 'Log In'}
+          </p>
         </button>
       </li>
-      {isAuthenticated && <li>{currentUser.email}</li>}
     </ul>
   </nav>
   <div>
