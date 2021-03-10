@@ -57,8 +57,10 @@ const StandardLayout = ({ children }) => {
       <li><Link to={routes.tickets()}>No auth Tickets</Link></li>
       <li><Link to={routes.users()}>No auth Users</Link></li>
       {isAuthenticated && <>
-      <li><Link to={routes.listtickets()}>Auth Tickets</Link></li>
-      <li><Link to={routes.listusers()}>Auth Users</Link></li></>
+      <li><Link to={routes.listTickets()}>Auth Tickets</Link></li>
+      <li><Link to={routes.listUsers()}>Auth Users</Link></li>
+      <li><Link to={routes.adminHome()}>Auth Home</Link></li>
+      </>
       }
       <li>
         <button onClick={isAuthenticated ? logOut : logIn}>
