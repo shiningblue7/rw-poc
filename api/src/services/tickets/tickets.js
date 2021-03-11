@@ -1,12 +1,12 @@
 import { db } from 'src/lib/db'
+import * as util from 'src/lib/util'
 import rules from 'src/rules/tickets/**.{js,ts}'
-let rulesArr = Object.keys(rules).map((k) => rules[k])//from obj to arr of objs
-rulesArr.sort((a,b) => a.order-b.order );//order rules asc
-//filter out inactive rules//tbd
-
+let beforeRulesArr = util.loadRules(rules, "before");
+let afterRulesArr = util.loadRules(rules, "after");
+util.log(`rulesArr`, rulesArr)
 
 export const tickets = () => {
-  return db.ticket.findMany({})
+  return db.ticket.findMany()
 }
 
 export const ticket = ({ id }) => {
@@ -18,12 +18,37 @@ export const ticket = ({ id }) => {
 export const createTicket = async ({ input }) => {
   var lastTicket = await db.ticket.findFirst({orderBy: [{number: 'desc'}],});
   input.number = (parseInt(lastTicket.number,10)+1).toString()
-  rulesArr.forEach((rule)=>{
+  beforeRulesArr.forEach((rule)=>{
+    util.log(`Starting Before ${rule.title} ${rule.order}`)
+    let previous = JSON.parse(JSON.stringify(input))    
     rule.command(input);
+    if(previous !== input){
+      for (var prop in input){
+        if(previous[prop] !== input[prop]){
+        util.log(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
+        }
+      }
+    }
+    util.log(`Ending Before ${rule.title}`)
   })
-  return db.ticket.create({
+  let update = db.ticket.create({
     data: input,
   })
+  afterRulesArr.forEach((rule)=>{
+    util.log(`Starting After ${rule.title} ${rule.order}`)
+    let previous = JSON.stringify(input)
+    previous = JSON.parse(previous)
+    rule.command(input);
+    if(previous !== input){
+      for (var prop in input){
+        if(previous[prop] !== input[prop]){
+        util.log(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
+        }
+      }
+    }
+    util.log(`Ending After ${rule.title}`)
+  })
+  return update;
 }
 
 export const updateTicket = ({ id, input }) => {
