@@ -3,7 +3,7 @@ import * as util from 'src/lib/util'
 import rules from 'src/rules/tickets/**.{js,ts}'
 let beforeRulesArr = util.loadRules(rules, "before");
 let afterRulesArr = util.loadRules(rules, "after");
-//util.log(`rulesArr`, rulesArr)
+util.log(`rulesArr`, rulesArr)
 
 export const tickets = () => {
   return db.ticket.findMany()
