@@ -8,8 +8,8 @@ module.exports = {
         console.log('ran from after rule!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         await db.ticket.create({
           data: {
-            number: current.number + '.5',
-            title: current.title + ' DUPLICATE ',
+            number: parseInt(current.number,10) + 1,
+            title: current.title + '(dup)',
             userId: current.userId
           },
         })

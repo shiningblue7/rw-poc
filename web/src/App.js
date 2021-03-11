@@ -1,3 +1,6 @@
+import { AuthProvider } from '@redwoodjs/auth'
+import netlifyIdentity from 'netlify-identity-widget'
+import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { FatalErrorBoundary } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -9,9 +12,11 @@ import './index.css'
 
 const App = () =>(
   <FatalErrorBoundary page={FatalErrorPage}>
-    <RedwoodApolloProvider>
-      <Routes />
-    </RedwoodApolloProvider>
+    <AuthProvider client={netlifyIdentity} type="netlify">
+      <RedwoodApolloProvider>
+        <Routes />
+      </RedwoodApolloProvider>
+    </AuthProvider>
   </FatalErrorBoundary>
 )
 

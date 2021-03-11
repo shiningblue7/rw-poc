@@ -3,7 +3,8 @@ import * as util from 'src/lib/util'
 import rules from 'src/rules/tickets/**.{js,ts}'
 let beforeRulesArr = util.loadRules(rules, "before");
 let afterRulesArr = util.loadRules(rules, "after");
-//util.log(`rulesArr`, rulesArr)
+import { requireAuth } from 'src/lib/auth'
+
 
 export const tickets = () => {
   return db.ticket.findMany()
@@ -16,7 +17,8 @@ export const ticket = ({ id }) => {
 }
 
 export const createTicket = async ({ input }) => {
-  var lastTicket = await db.ticket.findFirst({orderBy: [{number: 'desc'}],});
+  requireAuth()
+  var lastTicket = await db.ticket.findFirst({orderBy: [{number: 'desc'}],})
   input.number = (parseInt(lastTicket.number,10)+1).toString()
   beforeRulesArr.forEach((rule)=>{
     util.log(`Starting Before ${rule.title} ${rule.order}`)
@@ -53,6 +55,7 @@ export const createTicket = async ({ input }) => {
 }
 
 export const updateTicket = ({ id, input }) => {
+  requireAuth()
   return db.ticket.update({
     data: input,
     where: { id },
@@ -60,6 +63,7 @@ export const updateTicket = ({ id, input }) => {
 }
 
 export const deleteTicket = ({ id }) => {
+  requireAuth()
   return db.ticket.delete({
     where: { id },
   })
