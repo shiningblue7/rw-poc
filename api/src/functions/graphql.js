@@ -12,11 +12,11 @@ import { getCurrentUser } from 'src/lib/auth'
 
 export const handler = createGraphQLHandler({
   getCurrentUser,
-
   schema: makeMergedSchema({
     schemas,
     services: makeServices({ services }),
   }),
+
   onException: () => {
     // Disconnect from your database with an unhandled exception.
     db.$disconnect()

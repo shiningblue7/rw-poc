@@ -10,7 +10,9 @@ import Routes from 'src/Routes'
 import './scaffold.css'
 import './index.css'
 
-const App = () =>(
+isBrowser && netlifyIdentity.init()
+
+const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={netlifyIdentity} type="netlify">
       <RedwoodApolloProvider>
