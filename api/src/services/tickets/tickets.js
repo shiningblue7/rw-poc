@@ -5,7 +5,6 @@ let beforeRulesArr = util.loadRules(rules, "before");
 let afterRulesArr = util.loadRules(rules, "after");
 import { requireAuth } from 'src/lib/auth'
 
-
 export const tickets = () => {
   return db.ticket.findMany()
 }
@@ -29,8 +28,7 @@ export const createTicket = async ({ input }) => {
   }
   beforeRulesArr.forEach((rule)=>{
     util.log(`Starting Before ${rule.title} ${rule.order}`)
-    let previous = JSON.stringify(input)
-    previous = JSON.parse(previous)
+    let previous = JSON.parse(JSON.stringify(input))    
     rule.command(input);
     if(previous !== input){
       for (var prop in input){
