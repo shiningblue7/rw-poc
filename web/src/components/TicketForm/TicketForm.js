@@ -5,8 +5,10 @@ import {
   Label,
   TextField,
   NumberField,
+  SelectField,
   Submit,
 } from '@redwoodjs/forms'
+import UserLookupCell from 'src/components/UserLookupCell'
 
 const TicketForm = (props) => {
   const onSubmit = (data) => {
@@ -35,23 +37,11 @@ const TicketForm = (props) => {
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
+          autoComplete="off"
         />
         <FieldError name="title" className="rw-field-error" />
 
-        <Label
-          name="userId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          User id
-        </Label>
-        <NumberField
-          name="userId"
-          defaultValue={props.ticket?.userId}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
+        <UserLookupCell defaultValue={props.ticket?.userId} />
         <FieldError name="userId" className="rw-field-error" />
 
         <div className="rw-button-group">

@@ -45,9 +45,8 @@ export const Success = ({ ticket }) => {
   return (
     <div className="rw-segment">
       <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">
-          Edit Ticket {ticket.id}
-        </h2>
+        <p></p>
+        <p>Edit Ticket {ticket.id}</p>
       </header>
       <div className="rw-segment-main">
         <TicketForm

@@ -28,7 +28,7 @@ const NewTicket = () => {
     const castInput = Object.assign(input, { userId: parseInt(input.userId) })
     createTicket({ variables: { input: castInput } })
   }
-
+var rand = Math.random()
   return (
     <div className="rw-segment">
       <header className="rw-segment-header">

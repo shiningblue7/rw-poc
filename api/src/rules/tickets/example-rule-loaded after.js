@@ -8,8 +8,8 @@ module.exports = {
         util.log('Running from an after rule' + current.number + '-' + current.title)
         await db.ticket.create({
           data: {
-            number: current.number + '.5',
-            title: current.title + ' DUPLICATE ',
+            number: parseInt(current.number,10) + 1,
+            title: current.title + '(dup)',
             userId: current.userId
           },
         })
