@@ -1,5 +1,5 @@
 import * as util from 'src/lib/util'
-
+import { logger } from 'src/lib/logger'
 module.exports = {
   command: function (current) {
     try {
@@ -11,7 +11,7 @@ module.exports = {
         current.title += Intl.DateTimeFormat().resolvedOptions().timeZone
       }
     } catch (e) {
-      util.log(e);
+      logger.error(e);
     }
     return current;
   },
