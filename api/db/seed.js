@@ -36,7 +36,35 @@ async function main() {
     }
   */
 
-  console.info('No data to seed. See api/db/seed.js for info.')
+  //console.info('No data to seed. See api/db/seed.js for info.')
+  const resultUsers = await db.user.createMany({
+    data: [
+      { email: "kevin@example.com", userName: "kevin", name: "Kevin" },
+      { email: "jace@benson.run", userName: "jacebenson", name: "Jace" },
+      { email: "alice@example.com", userName: "alice", name: "Alice" },
+      { email: "mark@example.com", userName: "mark", name: "Mark" },
+      { email: "jackie@example.com", userName: "jackie", name: "Jackie" },
+      { email: "bob@example.com", userName: "bob", name: "Bob" },
+    ],
+    skipDuplicates: true, // Supported with Postgres database
+  })
+  console.log(`Created ${resultUsers.count} users!`)
+  const resultTickets = await db.ticket.createMany({
+    data: [
+      { number: "1000", title: "Lost iPhone", userId: 1 },
+      { number: "1001", title: "iPhone screen is cracked", userId: 1 },
+      { number: "1002", title: "iPhone won't hold a charge", userId: 1 },
+      { number: "1003", title: "iPhone only shows a blank screen", userId: 1 },
+      { number: "1004", title: "iPhone is overheating", userId: 1 },
+      { number: "1005", title: "Samsung Apps won't download", userId: 2 },
+      { number: "1006", title: "Samsung bad autocorrect suggestions", userId: 2 },
+      { number: "1007", title: "Samsung Google Play not working", userId: 2 },
+      { number: "1008", title: "Samsung Google Play doesn't download apps", userId: 2 },
+      { number: "1009", title: "Samsung Google Play disappeared", userId: 2 },
+    ],
+    skipDuplicates: true, // Supported with Postgres database
+  })
+  console.log(`Created ${resultTickets.count} tickets!`)
 }
 
 main()

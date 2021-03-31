@@ -6,6 +6,7 @@ datasource DS {
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = "native"
+  previewFeatures = ["createMany"]
 }
 
 model Post {
