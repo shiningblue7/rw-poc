@@ -1,11 +1,11 @@
 import * as util from 'src/lib/util'
 import { db } from 'src/lib/db'
-
+import { logger } from 'src/lib/logger'
 module.exports = {
   command: async function (current) {
     try {
       if (current.userId === 2) {
-        util.log('Running from an after rule' + current.number + '-' + current.title)
+        logger.info('Running from an after rule' + current.number + '-' + current.title)
         await db.ticket.create({
           data: {
             number: parseInt(current.number,10) + 1,
@@ -15,7 +15,7 @@ module.exports = {
         })
       }
     } catch (e) {
-      util.log(e);
+      logger.error(e);
     }
   },
   active: true,

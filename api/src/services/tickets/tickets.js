@@ -1,6 +1,7 @@
 import { db } from 'src/lib/db'
 import { requireAuth } from 'src/lib/auth'
 import * as util from 'src/lib/util'
+import { logger } from 'src/lib/logger'
 import rules from 'src/rules/tickets/**.{js,ts}'
 let beforeRulesArr = util.loadRules(rules, "before");
 let afterRulesArr = util.loadRules(rules, "after");
@@ -19,41 +20,41 @@ export const createTicket = async ({ input }) => {
   //requireAuth()
   var lastTicket = await db.ticket.findFirst({orderBy: [{number: 'desc'}],})
   if(lastTicket){
-    util.log(`lastTicket`, lastTicket);
+    logger.info(`lastTicket`, lastTicket);
     input.number = (parseInt(lastTicket.number,10)+1).toString()
-    util.log(`parseInt ${parseInt(lastTicket.number,10)}`)
+    logger.info(`parseInt ${parseInt(lastTicket.number,10)}`)
   } else {
     input.number = '1000'
   }
   beforeRulesArr.forEach((rule)=>{
-    util.log(`Starting Before ${rule.title} ${rule.order}`)
+    logger.info(`Starting Before ${rule.title} ${rule.order}`)
     let previous = JSON.parse(JSON.stringify(input))
     rule.command(input);
     if(previous !== input){
       for (var prop in input){
         if(previous[prop] !== input[prop]){
-        util.log(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
+          logger.info(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
         }
       }
     }
-    util.log(`Ending Before ${rule.title}`)
+    logger.info(`Ending Before ${rule.title}`)
   })
   let update = db.ticket.create({
     data: input,
   })
   afterRulesArr.forEach((rule)=>{
-    util.log(`Starting After ${rule.title} ${rule.order}`)
+    logger.info(`Starting After ${rule.title} ${rule.order}`)
     let previous = JSON.stringify(input)
     previous = JSON.parse(previous)
     rule.command(input);
     if(previous !== input){
       for (var prop in input){
         if(previous[prop] !== input[prop]){
-        util.log(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
+          logger.info(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
         }
       }
     }
-    util.log(`Ending After ${rule.title}`)
+    logger.info(`Ending After ${rule.title}`)
   })
   return update;
 }
