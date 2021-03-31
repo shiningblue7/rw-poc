@@ -1,0 +1,182 @@
+button, input, label, textarea {
+  display: block;
+  outline: none;
+}
+
+label {
+  margin-top: 1rem;
+}
+
+.error {
+  color: red;
+}
+
+input.error, textarea.error {
+  border: 1px solid red;
+}
+
+/* Generic bit */
+
+
+:root {
+  --body-width: 50rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  position: relative;
+  text-decoration: none;
+  color: #003052;
+  border-bottom: 0.125rem solid currentColor;
+  padding: 0 0.125rem 0.125rem;
+  border-radius: 0.125rem;
+  transition: all 0.2s ease-out;
+}
+
+a:focus, a:hover {
+  color: black;
+  background-color: #9dc0d7;
+  box-shadow: 0 0 0 0.125rem currentColor;
+}
+
+a:visited {
+  color: #623393;
+}
+
+h2 a:visited,
+h3 a:visited,
+h4 a:visited {
+  color: inherit;
+}
+
+a:focus:visited {
+  color: #38254E;
+}
+
+body {
+  background-color: whitesmoke;
+  color: #2d2d35;
+  display: flex;
+  flex-direction: column;
+  font-family: atkinson_hyperlegible, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1.1875rem;
+  line-height: 1.7;
+  text-rendering: optimizeLegibility;
+}
+
+body > * {
+  padding: 1rem 0;
+}
+
+header, main, footer {
+  display: grid;
+  grid-template-columns: minmax(1rem, 1fr) minmax(18rem, var(--body-width)) minmax(1rem, 1fr);
+}
+
+header nav {
+  display: flex;
+  grid-column: 2;
+  justify-content: space-between;
+}
+
+header nav ul li {
+  display: inline-block;
+  padding-left: 1rem;
+}
+
+nav a {
+  display: inline-block;
+}
+
+main {
+  background-color: white;
+}
+
+main > *,
+footer > * {
+  grid-column: 2;
+  padding: 1rem 0;
+}
+
+main > section + section > ul,
+main > article > ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(18rem,1fr));
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+}
+
+main > section article {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+main > article > * + *,
+main > article > aside > * + * {
+  margin-bottom: 1rem;
+}
+
+article > p:nth-of-type(2){
+  font-size: 1.6rem;
+}
+
+article > ul + p:nth-of-type(2) {
+  font-size: inherit;
+}
+
+main > article picture > img {
+  width: 100vw;
+  max-width: calc(var(--body-width) + 2rem);
+  margin-left: -1rem;
+  height: auto;
+}
+
+article > h2 > a,
+article > h3 > a,
+article > h4 > a {
+  position: relative;
+  color: unset;
+}
+
+article blockquote {
+  padding-left: 2.5rem;
+  border-left: 0.25rem solid;
+}
+
+article pre {
+  padding: 1.25rem;
+  white-space: pre-wrap;
+  border: 0.0625rem solid;
+  background-color: whitesmoke;
+}
+
+article p > code {
+  padding: 0.25rem 0.25rem 0.125rem;
+  border: 0.0625rem solid;
+  background-color: whitesmoke;
+}
+
+footer > * {
+  max-width: calc(var(--body-width)/2);
+}
+
+ul {
+  padding-left: 2rem;
+}
+
+ol {
+  margin-bottom: 1rem;
+}
+
+aside > nav > ul {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding-left: unset;
+}

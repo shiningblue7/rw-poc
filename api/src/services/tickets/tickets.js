@@ -4,7 +4,7 @@ import * as util from 'src/lib/util'
 import rules from 'src/rules/tickets/**.{js,ts}'
 let beforeRulesArr = util.loadRules(rules, "before");
 let afterRulesArr = util.loadRules(rules, "after");
-//util.log(`rulesArr`, rulesArr)
+import { requireAuth } from 'src/lib/auth'
 
 export const tickets = () => {
   return db.ticket.findMany()
@@ -17,12 +17,18 @@ export const ticket = ({ id }) => {
 }
 
 export const createTicket = async ({ input }) => {
-  var lastTicket = await db.ticket.findFirst({orderBy: [{number: 'desc'}],});
-  input.number = (parseInt(lastTicket.number,10)+1).toString()
+  //requireAuth()
+  var lastTicket = await db.ticket.findFirst({orderBy: [{number: 'desc'}],})
+  if(lastTicket){
+    util.log(`lastTicket`, lastTicket);
+    input.number = (parseInt(lastTicket.number,10)+1).toString()
+    util.log(`parseInt ${parseInt(lastTicket.number,10)}`)
+  } else {
+    input.number = '1000'
+  }
   beforeRulesArr.forEach((rule)=>{
     util.log(`Starting Before ${rule.title} ${rule.order}`)
-    let previous = JSON.stringify(input)
-    previous = JSON.parse(previous)
+    let previous = JSON.parse(JSON.stringify(input))    
     rule.command(input);
     if(previous !== input){
       for (var prop in input){

@@ -1,7 +1,4 @@
-import StandardLayout from "src/layouts/StandardLayout/StandardLayout";
-
 export default () => (
-  <StandardLayout>
   <main>
     <style
       dangerouslySetInnerHTML={{
@@ -38,11 +35,11 @@ export default () => (
             `,
       }}
     />
+
     <section>
       <h1>
         <span>404 Page Not Found</span>
       </h1>
     </section>
   </main>
-  </StandardLayout>
 )

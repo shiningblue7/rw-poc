@@ -56,7 +56,6 @@
 // together with a collection of roles to check for role assignment:
 
 import { AuthenticationError, ForbiddenError, parseJWT } from '@redwoodjs/api'
-import { db } from 'src/lib/db'
 
 /**
  * Use requireAuth in your services to check that a user is logged in,
@@ -98,9 +97,8 @@ import { db } from 'src/lib/db'
  *   }
  * }
  */
- export const getCurrentUser = async (decoded, { _token, _type }) => {
-  const currentUser = await db.user.findUnique({where: { email: decoded.email }})
-  return {...currentUser,...decoded, roles: parseJWT({ decoded }).roles }
+export const getCurrentUser = async (decoded, { _token, _type }) => {
+  return { ...decoded, roles: parseJWT({ decoded }).roles }
 }
 
 /**
@@ -124,8 +122,6 @@ import { db } from 'src/lib/db'
  * requireAuth({ role: ['publisher'] })
  */
 export const requireAuth = ({ role } = {}) => {
-  console.log(`in requireAuth with role ${role}`)
-  console.log(`in requireAuth with context ${JSON.stringify(context)}`)
   if (!context.currentUser) {
     throw new AuthenticationError("You don't have permission to do that.")
   }

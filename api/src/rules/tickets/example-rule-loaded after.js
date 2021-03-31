@@ -5,11 +5,11 @@ module.exports = {
   command: async function (current) {
     try {
       if (current.userId === 2) {
-        console.log('ran from after rule!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        util.log('Running from an after rule' + current.number + '-' + current.title)
         await db.ticket.create({
           data: {
-            number: current.number + '.5',
-            title: current.title + ' DUPLICATE ',
+            number: parseInt(current.number,10) + 1,
+            title: current.title + '(dup)',
             userId: current.userId
           },
         })
@@ -17,7 +17,6 @@ module.exports = {
     } catch (e) {
       util.log(e);
     }
-    //return current;
   },
   active: true,
   order: 10,
