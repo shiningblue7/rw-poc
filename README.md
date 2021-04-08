@@ -1,24 +1,57 @@
-# Redwood
+# Tskr
 
-> **WARNING:** RedwoodJS software has not reached a stable version 1.0 and should not be considered suitable for production use. In the "make it work; make it right; make it fast" paradigm, Redwood is in the later stages of the "make it work" phase.
+A open source task and asset tracking tool.
 
-## Getting Started
-- [Tutorial](https://redwoodjs.com/tutorial/welcome-to-redwood): getting started and complete overview guide.
-- [Docs](https://redwoodjs.com/docs/introduction): using the Redwood Router, handling assets and files, list of command-line tools, and more.
-- [Redwood Community](https://community.redwoodjs.com): get help, share tips and tricks, and collaborate on everything about RedwoodJS.
+## Features
 
-### Setup
+<details>
+  <summary>Users</summary>
+  <span>Allow full user management from within the tool</span>
 
-We use Yarn as our package manager. To get the dependencies installed, just do this in the root directory:
+  - Authentication via Azure
+  - [Role Based Access from database](https://redwoodjs.com/docs/authentication#roles-from-a-database)
+    </details>
 
-```terminal
-yarn install
-```
+  <details>
+  <summary>Tasks</summary>
+  <span>You know, to fill forms in a standard way</span>
+    - Links to Assets
+    - Links to Users
+  </details>
 
-### Fire it up
+  <details>
+  <summary>Asset</summary>
+  <span>You know, to have things to track against</span>
+    - Links to Assets
+  </details>
 
-```terminal
-yarn redwood dev
-```
 
-Your browser should open automatically to `http://localhost:8910` to see the web app. Lambda functions run on `http://localhost:8911` and are also proxied to `http://localhost:8910/.redwood/functions/*`. 
+
+  <details>
+  <summary>Table level rules</summary>
+  <span>
+  Do you ever want to do some server side logic on create/update of a record?  Me too.
+
+  Do you ever want to keep that logic in it's own file that is easy to track and debug? Me too!
+
+  **Introducting Table level rules!**
+
+  How does it work?  Well, we have a folder in `./api/src/` called rules that has the tables in use.
+
+  In the appropriate services we use some magic to pull in these rules and they run in the order defined in their file. Want more logic?  Make a new rule. Want less?  Delete or deactivate a rule.
+
+  </span>
+  Status x = working
+
+  | Status  | When   | Action | Why (example use case) |
+  | ------- | ------ | ------ | ---------------------- |
+  | Working | Before | Create | Verify duplicate ticket isn't logged |
+  |         | Before | Read   | Remove senstive data / Logging someone tried to read sensitve records |
+  |         | Before | Update | Disallow updating of specific fields |
+  |         | Before | Delete | Store deleted record in temporary table to allow restore |
+  | Working | After  | Create | Datalookup, e.g. assigned to availablity or Sending a email |
+  |         | After  | Read   | Logging someone read a sensitve record |
+  |         | After  | Update | Datalookup, e.g. assigned to availablity or Sending a email |
+  |         | After  | Delete | Email that data has been purged |
+
+  </details>
