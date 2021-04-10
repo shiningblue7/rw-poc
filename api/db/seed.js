@@ -39,12 +39,13 @@ async function main() {
   //console.info('No data to seed. See api/db/seed.js for info.')
   const resultUsers = await db.user.createMany({
     data: [
-      { email: "kevin@example.com", userName: "kevin", name: "Kevin" },
-      { email: "jace@benson.run", userName: "jacebenson", name: "Jace" },
-      { email: "alice@example.com", userName: "alice", name: "Alice" },
-      { email: "mark@example.com", userName: "mark", name: "Mark" },
-      { email: "jackie@example.com", userName: "jackie", name: "Jackie" },
-      { email: "bob@example.com", userName: "bob", name: "Bob" },
+      { email: "demotaskdoer@tskr.io", userName: "demotaskdoer", name: "Tom Tillamook"},
+      { email: "demotaskadmin@tskr.io", userName: "demotaskadmin", name: "Tory Taylor"},
+      { email: "demoassetdoer@tskr.io", userName: "demoassetdoer", name: "Adam Anderson"},
+      { email: "demoassetadmin@tskr.io", userName: "demoassetadmin", name: "Anna Abbott"},
+      { email: "demoadmin@tskr.io", userName: "demoadmin", name: "Ali Armstrong"},
+      { email: "kevin@example.com", userName: "kevin", name: "Kevin K" },
+      { email: "jace@benson.run", userName: "jacebenson", name: "Jace B" },
     ],
     skipDuplicates: true, // Supported with Postgres database
   })

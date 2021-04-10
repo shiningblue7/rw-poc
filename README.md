@@ -9,6 +9,17 @@ A open source task and asset tracking tool.
     <summary>Allow full user management from within the tool</summary>
 
   - Authentication via Azure
+  - Roles that disctate access
+
+| Role        | Operations                                        |
+| ----------- | ------------------------------------------------- |
+| Admin       |	Create, Read, Update, Delete all                  |
+| Task Doer	  | Create, Read all the Tasks, Update open Tasks     |
+| Task Admin	| Create, Read, Update, Delete all the Tasks        |
+| Asset Doer	| Create, Read all the Assets, Update active Assets |
+| Asset Admin |	Create, Read, Update, Delete all the Assets       |
+
+Implement the Roles/Personas from the above.
   - [Role Based Access from database](https://redwoodjs.com/docs/authentication#roles-from-a-database)
   </details>
 
@@ -60,11 +71,15 @@ Because this is uses the following you'll need to configure them.
 1.  Postgres
 2.  Azure
 
-### Postgres
+### Postgres for Data
 
 This should include site that we use, seed command, env variable set up
 
-### Azure
+#### Seeding the database
+
+`yarn rw prisma db seed` will load the 7 users and 10 tasks.
+
+### Azure for Authentication
 
 Because we use Azure for auth you'll need to create or connect to your own.
 
