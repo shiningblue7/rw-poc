@@ -1,8 +1,8 @@
 import { Link, routes } from '@redwoodjs/router'
-import StandardLayout from 'src/layouts/StandardLayout/StandardLayout'
+
 
 const HomePage = () => {
-  return (<StandardLayout>
+  return (<>
       This is home
 
       <h2>Logins</h2>
@@ -16,13 +16,13 @@ const HomePage = () => {
         </thead>
         <tbody>
           <tr>
-            <td>ssunpkyfgylsrumhuw@upived.online</td>
-            <td>rwpoc</td>
-            <td>User</td>
+            <td>taskdoer@jacebenson.onmicrosoft.com</td>
+            <td>RWPoc1234</td>
+            <td>Task Doer</td>
           </tr>
         </tbody>
       </table>
-  </StandardLayout>)
+  </>)
 }
 
 export default HomePage

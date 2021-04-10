@@ -9,7 +9,7 @@ import {
 } from '@redwoodjs/forms'
 import { useForm } from 'react-hook-form'
 import { Flash, useFlash, useMutation } from '@redwoodjs/web'
-import StandardLayout from 'src/layouts/StandardLayout/StandardLayout'
+
 
 
 const CREATE_CONTACT = gql`
@@ -36,7 +36,7 @@ const ContactPage = () => {
     console.log(data);
   }
   return (
-    <StandardLayout>
+    <>
       <Flash timeout={2000} />
       <Form
         onSubmit={onSubmit}
@@ -88,7 +88,7 @@ const ContactPage = () => {
 
         <Submit disabled={loading}>Save</Submit>
       </Form>
-    </StandardLayout>
+    </>
   )
 }
 

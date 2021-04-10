@@ -4,11 +4,11 @@ import StandardLayout from 'src/layouts/StandardLayout'
 
 const NewPostPage = () => {
   return (
-    <StandardLayout>
+    <>
     <PostsLayout>
       <NewPost />
     </PostsLayout>
-    </StandardLayout>
+    </>
   )
 }
 
