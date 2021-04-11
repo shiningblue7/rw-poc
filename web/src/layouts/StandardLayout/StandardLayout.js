@@ -10,7 +10,7 @@ const StandardLayout = ({ children }) => {
 
         </h1>
         <nav>
-          <Link to={routes.home()}>RW POC</Link>
+          <Link to={routes.home()}>Tskr.io</Link>
           <ul>
 
             <li><Link to={routes.about()}>About</Link></li>
