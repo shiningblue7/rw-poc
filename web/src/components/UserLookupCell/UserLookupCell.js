@@ -29,7 +29,7 @@ export const Success = ({ defaultValue, users }) => {
   //return <Users users={users} />
   var options = users.map((user)=>{
         console.log(`user`, user);
-        return <option name="test" value={user.id}>{user['name']}</option>
+        return <option key={user.id} value={user.id}>{user['name']}</option>
       })
   return (<>
         <Label
