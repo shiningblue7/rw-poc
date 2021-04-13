@@ -8,25 +8,44 @@ import { db } from 'src/lib/db'
 import { AuthenticationError, ForbiddenError, parseJWT } from '@redwoodjs/api'
 
 export const getCurrentUser = async (decoded, { token, type }) => {
-  let user =  await db.user.findUnique({
-    where: { email: decoded.preferred_username }
-  })
-  let roles = await db.userRole.findMany({
-    where: { userId: user.id}
-  })
-  return {
-    email: decoded.preferred_username ?? null,
-    name: decoded.name ?? null,
-    decoded: {
-      ...decoded
-    },
-    user: {
-      ...user
-    },
-    //roles: parseJWT({ decoded }).roles
-    roles: [
-      ...roles
-    ]
+  try {
+    let user = await db.user.findUnique({
+      where: { email: decoded.preferred_username }
+    })
+    //if no user found... create one
+    let justRoles = [];
+    console.log(user)
+    if(user){
+    let roles = await db.userRole.findMany({
+      where: { userId: user.id }
+    })
+    justRoles = roles.map((role) => {
+      return role.name
+    })
+    } else {
+      //user is logged in but no user exists
+      //this creates the user
+      user = await db.user.create({
+        data: {
+         email: decoded.preferred_username,
+         userName: decoded.preferred_username,
+         name: decoded.name
+        }
+      })
+    }
+    return {
+      decoded: {
+        ...decoded
+      },
+      ...user,
+      email: decoded.preferred_username ?? null,
+      name: decoded.name ?? null,
+      roles: [
+        ...justRoles
+      ]
+    }
+  } catch (error) {
+    return error
   }
 }
 

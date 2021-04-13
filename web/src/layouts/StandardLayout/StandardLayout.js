@@ -19,7 +19,9 @@ const StandardLayout = ({ children }) => {
             {isAuthenticated && <li><Link to={routes.users()}>Users</Link></li>}
             <li>
               <a alt={JSON.stringify(currentUser)} onClick={isAuthenticated ? logOut : logIn}>
-                {isAuthenticated ? `Log Out ${currentUser.name}` : 'Log In'}
+                {isAuthenticated && currentUser && (`Log Out ${currentUser.name}`)}
+                {isAuthenticated && !currentUser && (`Log Out`)}
+                {!isAuthenticated && `Log In`}
               </a>
             </li>
           </ul>
