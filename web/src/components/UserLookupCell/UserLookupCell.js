@@ -11,15 +11,16 @@ export const QUERY = gql`
   }
 `
 
+export const Failure = () => <div>
+  <FieldError name="userId" className="rw-field-error" />
+</div>
+
 export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => {
   return (
     <div className="rw-text-center">
       {'No users yet. '}
-      <Link to={routes.newUser()} className="rw-link">
-        {'Create one?'}
-      </Link>
     </div>
   )
 }
@@ -46,11 +47,9 @@ export const Success = ({ defaultValue, users }) => {
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
         >
-          <option>Pick One</option>
+          <option value="">Pick One</option>
           {options}
         </SelectField>
-
-        <FieldError name="userId" className="rw-field-error" />
     </>
   )
 }
