@@ -4,16 +4,67 @@
 //   export const getCurrentUser = async ({ email }) => {
 //     return await db.user.findUnique({ where: { email } })
 //   }
-
+import { db } from 'src/lib/db'
 import { AuthenticationError, ForbiddenError, parseJWT } from '@redwoodjs/api'
 
 export const getCurrentUser = async (decoded, { token, type }) => {
-  return {
-    email: decoded.preferred_username ?? null,
-    ...decoded,
-    roles: parseJWT({ decoded }).roles
+  try {
+    let user = await db.user.findUnique({
+      where: { email: decoded.preferred_username }
+    })
+    //if no user found... create one
+    //let justRoles = [];
+    //console.log(user)
+    let justRoles = []
+    if (user) {
+      console.log(`found user ${JSON.stringify(user)}`);
+      let roles = await db.userRole.findMany({
+        where: { userId: user.id }
+      })
+      console.log(`looking for roles, found ${roles.length}`)
+      justRoles = roles.map((role) => {
+        return role.name
+      })
+    } else {
+      //user is logged in but no user exists
+      //this creates the user
+    user = await db.user.create({
+        data: {
+          email: decoded.preferred_username,
+          userName: decoded.preferred_username,
+          name: decoded.name
+        }
+      })
+      justRoles = [];
+    }
+    return {
+        decoded: {
+          ...decoded
+        },
+        ...user,
+        email: decoded.preferred_username ?? null,
+        name: decoded.name ?? null,
+        roles: [
+          ...justRoles
+        ]
+      }
+  } catch (error) {
+    return error
   }
 }
+
+/*export const getCurrentUser = async (decoded) => {
+  const userRoles = await db.userRole.findMany({
+    where: { user: { email: decoded.preferred_username } },
+    select: { name: true },
+  })
+
+  const roles = userRoles.map((role) => {
+    return role.name
+  })
+
+  return context.currentUser || { roles }
+}*/
 
 // Use this function in your services to check that a user is logged in, and
 // optionally raise an error if they're not.

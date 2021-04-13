@@ -1,6 +1,18 @@
 # Tskr
 
-A open source task and asset tracking tool.
+Tskr is a open source, task and asset tracking application built on [RedwoodJS](https://redwoodjs.com).  Imagine a low-cost task and asset tracking system where you define complex rules to execute the business needs you have — that's **Tskr**.
+
+Because RedwoodJS is the base of this project I'd be remiss if I didn't share the current disclaimer on their project here.
+
+> WARNING: RedwoodJS software has not reached a stable version 1.0 and should not be considered suitable for production use. In the "make it work; make it right; make it fast" paradigm, Redwood is in the later stages of the "make it work" phase. That said, your input can have a huge impact during this period, and we welcome your feedback and ideas! Check out the Redwood Community Forum to join in.
+
+We are an opinionated system.  We make the decisions so you don't have to.
+
+This project will use the following features.
+
+- Azure Active Directory for Authentication
+- Role Based Access Control within Tskr
+- Postgres (at your choice of provider)
 
 ## Features
 
@@ -65,6 +77,8 @@ You know, to have things to track against
   </details>
 
 ## Set up
+
+1.  Installing the repo
 
 Because this is uses the following you'll need to configure them.
 

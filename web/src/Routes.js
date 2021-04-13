@@ -1,3 +1,4 @@
+import { useAuth } from "@redwoodjs/auth";
 import { Router, Route, Private, Set } from '@redwoodjs/router'
 import StandardLayout from './layouts/StandardLayout/StandardLayout'
 
@@ -25,7 +26,9 @@ const Routes = () => {
 
       </Private>
 
-      <Route path="/posts" page={PostsPage} name="posts" />
+      <Private unauthenticated="home" role="admin" >
+        <Route path="/posts" page={PostsPage} name="posts" />
+      </Private>
       <Route path="/contact" page={ContactPage} name="contact" />
       <Route path="/blog-post/{id:Int}" page={BlogPostPage} name="blogPost" />
       <Route path="/about" page={AboutPage} name="about" />

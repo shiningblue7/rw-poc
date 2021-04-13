@@ -71,7 +71,16 @@ const TicketsList = ({ tickets }) => {
             <tr key={ticket.id}>
               <td>{truncate(ticket.number)}</td>
               <td>{truncate(ticket.title)}</td>
-              <td><div title={truncate(ticket.userId)}>{truncate(ticket.User.name)}</div></td>
+              <td>
+                {ticket.userId && (
+                  <div title={truncate(ticket.userId)}>
+                  {truncate(ticket.User.name)}
+                </div>
+                )}
+                {!ticket.userId && (
+                  <div title=""></div>
+                )}
+              </td>
               <td>
                 <nav className="rw-table-actions">
                   <Link
