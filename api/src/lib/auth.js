@@ -13,37 +13,41 @@ export const getCurrentUser = async (decoded, { token, type }) => {
       where: { email: decoded.preferred_username }
     })
     //if no user found... create one
-    let justRoles = [];
-    console.log(user)
-    if(user){
-    let roles = await db.userRole.findMany({
-      where: { userId: user.id }
-    })
-    justRoles = roles.map((role) => {
-      return role.name
-    })
+    //let justRoles = [];
+    //console.log(user)
+    let justRoles = []
+    if (user) {
+      console.log(`found user ${JSON.stringify(user)}`);
+      let roles = await db.userRole.findMany({
+        where: { userId: user.id }
+      })
+      console.log(`looking for roles, found ${roles.length}`)
+      justRoles = roles.map((role) => {
+        return role.name
+      })
     } else {
       //user is logged in but no user exists
       //this creates the user
-      user = await db.user.create({
+    user = await db.user.create({
         data: {
-         email: decoded.preferred_username,
-         userName: decoded.preferred_username,
-         name: decoded.name
+          email: decoded.preferred_username,
+          userName: decoded.preferred_username,
+          name: decoded.name
         }
       })
+      justRoles = [];
     }
     return {
-      decoded: {
-        ...decoded
-      },
-      ...user,
-      email: decoded.preferred_username ?? null,
-      name: decoded.name ?? null,
-      roles: [
-        ...justRoles
-      ]
-    }
+        decoded: {
+          ...decoded
+        },
+        ...user,
+        email: decoded.preferred_username ?? null,
+        name: decoded.name ?? null,
+        roles: [
+          ...justRoles
+        ]
+      }
   } catch (error) {
     return error
   }
