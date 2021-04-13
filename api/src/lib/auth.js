@@ -4,16 +4,44 @@
 //   export const getCurrentUser = async ({ email }) => {
 //     return await db.user.findUnique({ where: { email } })
 //   }
-
+import { db } from 'src/lib/db'
 import { AuthenticationError, ForbiddenError, parseJWT } from '@redwoodjs/api'
 
 export const getCurrentUser = async (decoded, { token, type }) => {
+  let user =  await db.user.findUnique({
+    where: { email: decoded.preferred_username }
+  })
+  let roles = await db.userRole.findMany({
+    where: { userId: user.id}
+  })
   return {
     email: decoded.preferred_username ?? null,
-    ...decoded,
-    roles: parseJWT({ decoded }).roles
+    name: decoded.name ?? null,
+    decoded: {
+      ...decoded
+    },
+    user: {
+      ...user
+    },
+    //roles: parseJWT({ decoded }).roles
+    roles: [
+      ...roles
+    ]
   }
 }
+
+/*export const getCurrentUser = async (decoded) => {
+  const userRoles = await db.userRole.findMany({
+    where: { user: { email: decoded.preferred_username } },
+    select: { name: true },
+  })
+
+  const roles = userRoles.map((role) => {
+    return role.name
+  })
+
+  return context.currentUser || { roles }
+}*/
 
 // Use this function in your services to check that a user is logged in, and
 // optionally raise an error if they're not.
