@@ -1,6 +1,5 @@
 import { AuthProvider } from '@redwoodjs/auth'
-import netlifyIdentity from 'netlify-identity-widget'
-import { isBrowser } from '@redwoodjs/prerender/browserUtils'
+import { UserAgentApplication } from 'msal'
 import { FatalErrorBoundary } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
@@ -10,11 +9,19 @@ import Routes from 'src/Routes'
 import './scaffold.css'
 import './index.css'
 
-isBrowser && netlifyIdentity.init()
+const azureActiveDirectoryClient = new UserAgentApplication({
+  auth: {
+    clientId: process.env.AZURE_ACTIVE_DIRECTORY_CLIENT_ID,
+    authority: process.env.AZURE_ACTIVE_DIRECTORY_AUTHORITY,
+    redirectUri: process.env.AZURE_ACTIVE_DIRECTORY_REDIRECT_URI,
+    postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
+  }
+})
 
+console.log(azureActiveDirectoryClient);
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
-    <AuthProvider client={netlifyIdentity} type="netlify">
+    <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">
       <RedwoodApolloProvider>
         <Routes />
       </RedwoodApolloProvider>

@@ -10,7 +10,7 @@ const StandardLayout = ({ children }) => {
 
         </h1>
         <nav>
-          <Link to={routes.home()}>RW POC</Link>
+          <Link to={routes.home()}>Tskr.io</Link>
           <ul>
 
             <li><Link to={routes.about()}>About</Link></li>
@@ -19,7 +19,7 @@ const StandardLayout = ({ children }) => {
             {isAuthenticated && <li><Link to={routes.users()}>Users</Link></li>}
             <li>
               <a alt={currentUser} onClick={isAuthenticated ? logOut : logIn}>
-                {isAuthenticated ? `Log Out ${currentUser.user_metadata.full_name}` : 'Log In'}
+                {isAuthenticated ? `Log Out ${currentUser.name}` : 'Log In'}
               </a>
             </li>
           </ul>

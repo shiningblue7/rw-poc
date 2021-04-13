@@ -8,6 +8,11 @@
 [web]
   port = 8910
   apiProxyPath = "/.netlify/functions"
+  includeEnvironmentVariables = [
+    'AZURE_ACTIVE_DIRECTORY_CLIENT_ID',
+    'AZURE_ACTIVE_DIRECTORY_AUTHORITY',
+    'AZURE_ACTIVE_DIRECTORY_REDIRECT_URI','AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI'
+  ]
 [api]
   port = 8911
   schemaPath = "./api/db/schema.prisma"
