@@ -74,6 +74,8 @@ async function main() {
       { name: "task_admin", userId: 2 },
       { name: "asset_doer", userId: 3 },
       { name: "asset_admin", userId: 4 },
+      { name: "user_admin", userId: 4 },
+      { name: "user_doer", userId: 4 }
     ],
     skipDuplicates: true, // Supported with Postgres database
   })

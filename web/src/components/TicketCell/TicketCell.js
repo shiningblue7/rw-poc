@@ -7,6 +7,10 @@ export const QUERY = gql`
       number
       title
       userId
+      state
+      impact
+      urgency
+      priority
     }
   }
 `

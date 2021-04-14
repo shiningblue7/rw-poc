@@ -17,11 +17,9 @@ export const getCurrentUser = async (decoded, { token, type }) => {
     //console.log(user)
     let justRoles = []
     if (user) {
-      console.log(`found user ${JSON.stringify(user)}`);
       let roles = await db.userRole.findMany({
         where: { userId: user.id }
       })
-      console.log(`looking for roles, found ${roles.length}`)
       justRoles = roles.map((role) => {
         return role.name
       })
