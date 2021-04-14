@@ -74,13 +74,10 @@ export const createTicket = async ({ input }) => {
 export const updateTicket = ({ id, input }) => {
   requireAuth({ role: UPDATE_TASK_ROLES })
 
-  if(input.state === "solved"){
-    requireAuth({ role: UPDATE_TASK_SOLVED_ROLES })
-  }
-  return db.ticket.update({
-    data: input,
-    where: { id },
-  })
+    return db.ticket.update({
+      data: input,
+      where: { id },
+    })
 }
 
 export const deleteTicket = ({ id }) => {
