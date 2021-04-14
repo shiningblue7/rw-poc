@@ -27,7 +27,7 @@ This project will use the following features.
 | ----------- | ------------------------------------------------- |
 | Admin       |	Create, Read, Update, Delete all                  |
 | Task Doer	  | Create, Read all the Tasks, Update open Tasks     |
-| Task Admin	| Create, Read, Update, Delete all the Tasks        |
+| Task Admin	| Update solved Tasks, Delete all the Tasks         |
 | Asset Doer	| Create, Read all the Assets, Update active Assets |
 | Asset Admin |	Create, Read, Update, Delete all the Assets       |
 

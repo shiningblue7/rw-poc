@@ -5,6 +5,10 @@ export const schema = gql`
     title: String
     User: User
     userId: Int
+    state: String
+    impact: String
+    urgency: String
+    priority: String
   }
 
   type Query {
@@ -16,12 +20,20 @@ export const schema = gql`
     number: String
     title: String
     userId: Int
+    state: String
+    impact: String
+    urgency: String
+    priority: String
   }
 
   input UpdateTicketInput {
     number: String
     title: String
     userId: Int
+    state: String
+    impact: String
+    urgency: String
+    priority: String
   }
 
   type Mutation {

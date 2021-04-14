@@ -9,6 +9,10 @@ export const QUERY = gql`
       number
       title
       userId
+      state
+      impact
+      urgency
+      priority
     }
   }
 `
@@ -19,6 +23,10 @@ const UPDATE_TICKET_MUTATION = gql`
       number
       title
       userId
+      state
+      impact
+      urgency
+      priority
     }
   }
 `
@@ -38,7 +46,9 @@ export const Success = ({ ticket }) => {
   )
 
   const onSave = (input, id) => {
-    const castInput = Object.assign(input, { userId: parseInt(input.userId) })
+    const castInput = Object.assign(input, {
+      userId: parseInt(input.userId)
+    })
     updateTicket({ variables: { id, input: castInput } })
   }
 

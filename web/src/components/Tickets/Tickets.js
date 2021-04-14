@@ -13,6 +13,14 @@ const DELETE_TICKET_MUTATION = gql`
 
 const MAX_STRING_LENGTH = 150
 
+const propercase = (text) =>{
+  text = text.toLowerCase().split(' ');
+  for (var i = 0; i < text.length; i++) {
+    text[i] = text[i].charAt(0).toUpperCase() + text[i].slice(1);
+  }
+  return text.join(' ');
+}
+
 const truncate = (text) => {
   let output = text
   if (text && text.length > MAX_STRING_LENGTH) {
@@ -61,6 +69,7 @@ const TicketsList = ({ tickets }) => {
         <thead>
           <tr>
             <th>Number</th>
+            <th>State</th>
             <th>Title</th>
             <th>User</th>
             <th>&nbsp;</th>
@@ -70,6 +79,7 @@ const TicketsList = ({ tickets }) => {
           {tickets.map((ticket) => (
             <tr key={ticket.id}>
               <td>{truncate(ticket.number)}</td>
+              <td>{propercase(ticket.state)}</td>
               <td>{truncate(ticket.title)}</td>
               <td>
                 {ticket.userId && (
