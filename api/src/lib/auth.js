@@ -13,8 +13,6 @@ export const getCurrentUser = async (decoded, { token, type }) => {
       where: { email: decoded.preferred_username }
     })
     //if no user found... create one
-    //let justRoles = [];
-    //console.log(user)
     let justRoles = []
     if (user) {
       let roles = await db.userRole.findMany({

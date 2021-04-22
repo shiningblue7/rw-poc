@@ -11,7 +11,6 @@ import {
 import UserLookupCell from 'src/components/UserLookupCell'
 
 const TicketForm = (props) => {
-  console.log(props)
   const onSubmit = (data) => {
     props.onSave(data, props?.ticket?.id)
   }

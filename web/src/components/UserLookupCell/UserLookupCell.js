@@ -28,7 +28,6 @@ export const Empty = () => {
 export const Success = ({ defaultValue, users }) => {
   //return <Users users={users} />
   var options = users.map((user)=>{
-        console.log(`user`, user);
         return <option key={user.id} value={user.id}>{user['name']}</option>
       })
   return (<>
