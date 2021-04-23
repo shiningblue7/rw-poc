@@ -23,14 +23,6 @@ This project will use the following features.
   - Authentication via Azure
   - Roles that disctate access
 
-| Role        | Operations                                        |
-| ----------- | ------------------------------------------------- |
-| Admin       | Create, Read, Update, Delete all                  |
-| Task Doer   | Create, Read all the Tasks, Update open Tasks     |
-| Task Admin  | Update solved Tasks, Delete all the Tasks         |
-| Asset Doer  | Create, Read all the Assets, Update active Assets |
-| Asset Admin | Create, Read, Update, Delete all the Assets       |
-
 (see ./api/src/lib/roles.js)
 ```js
 export const matrix = {
