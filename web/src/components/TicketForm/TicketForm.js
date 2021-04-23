@@ -4,21 +4,40 @@ import {
   FieldError,
   Label,
   TextField,
-  NumberField,
   SelectField,
   Submit,
 } from '@redwoodjs/forms'
 import UserLookupCell from 'src/components/UserLookupCell'
+import { useAuth } from '@redwoodjs/auth'
 
 const TicketForm = (props) => {
-  console.log(props)
   const onSubmit = (data) => {
     props.onSave(data, props?.ticket?.id)
   }
-
+  const { hasRole, currentUser } = useAuth()
+  const canWrite = () => {
+    //if ticket is not passed, new record.
+    if(typeof props.ticket === 'undefined'){
+      return true;
+    }
+    //if ticket state is solved... require task_admin or admin
+    if(props?.ticket?.state === 'solved'){
+      if(hasRole('task_admin') || hasRole('admin')){
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+  console.log(`canWrite ${canWrite()}`)
+  console.log('currentUser', currentUser)
+  //console.log(rulesMatrix);
   return (
     <div className="rw-form-wrapper">
       <Form onSubmit={onSubmit} error={props.error}>
+      <fieldset disabled={canWrite()===false}>
         <FormError
           error={props.error}
           wrapperClassName="rw-form-error-wrapper"
@@ -49,6 +68,7 @@ const TicketForm = (props) => {
         </Label>
         <SelectField
           name="state"
+          className="rw-input"
           validation={{ required: true }}
           defaultValue={props.ticket?.state}
         >
@@ -64,10 +84,11 @@ const TicketForm = (props) => {
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          IMPACT
+          Impact
         </Label>
         <SelectField
           name="impact"
+          className="rw-input"
           validation={{ required: true }}
           defaultValue={props.ticket?.impact}
         >
@@ -82,10 +103,11 @@ const TicketForm = (props) => {
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          URGENCY
+          Urgency
         </Label>
         <SelectField
           name="urgency"
+          className="rw-input"
           validation={{ required: true }}
           defaultValue={props.ticket?.urgency}
         >
@@ -99,10 +121,11 @@ const TicketForm = (props) => {
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          PRIORITY
+          Priority
         </Label>
         <SelectField
           name="priority"
+          className="rw-input"
           validation={{ required: true }}
           defaultValue={props.ticket?.priority}
         >
@@ -120,6 +143,8 @@ const TicketForm = (props) => {
             Save
           </Submit>
         </div>
+
+        </fieldset>
       </Form>
     </div>
   )

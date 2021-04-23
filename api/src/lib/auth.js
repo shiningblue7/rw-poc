@@ -6,6 +6,8 @@
 //   }
 import { db } from 'src/lib/db'
 import { AuthenticationError, ForbiddenError, parseJWT } from '@redwoodjs/api'
+import { matrix } from 'src/lib/roles'
+
 
 export const getCurrentUser = async (decoded, { token, type }) => {
   try {
@@ -13,8 +15,6 @@ export const getCurrentUser = async (decoded, { token, type }) => {
       where: { email: decoded.preferred_username }
     })
     //if no user found... create one
-    //let justRoles = [];
-    //console.log(user)
     let justRoles = []
     if (user) {
       let roles = await db.userRole.findMany({
@@ -36,15 +36,16 @@ export const getCurrentUser = async (decoded, { token, type }) => {
       justRoles = [];
     }
     return {
-        decoded: {
-          ...decoded
-        },
+        //decoded: {
+        //  ...decoded
+        //},
         ...user,
         email: decoded.preferred_username ?? null,
         name: decoded.name ?? null,
         roles: [
           ...justRoles
-        ]
+        ],
+        matrix: matrix
       }
   } catch (error) {
     return error
