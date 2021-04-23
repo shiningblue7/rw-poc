@@ -2,35 +2,29 @@ import { db } from 'src/lib/db'
 import { requireAuth } from 'src/lib/auth'
 import * as util from 'src/lib/util'
 import { logger } from 'src/lib/logger'
-
-const CREATE_ASSET_ROLES = ['asset_doer', 'asset_admin', 'admin']
-const READ_ASSET_ROLES = ['asset_doer', 'asset_admin', 'admin']
-const UPDATE_ASSET_ROLES = ['asset_doer', 'asset_admin', 'admin']
-const UPDATE_ASSET_SOLVED_ROLES = ['asset_admin', 'admin']
-const DELETE_ASSET_ROLES = ['asset_admin', 'admin']
-//requireAuth({ role: DELETE_ASSET_ROLES })
+import { matrix } from 'src/lib/roles'
 
 export const cmdbs = () => {
-  requireAuth({ role: READ_ASSET_ROLES })
+  requireAuth({ role: matrix.asset.read })
   return db.cmdb.findMany()
 }
 
 export const cmdb = ({ id }) => {
-  requireAuth({ role: READ_ASSET_ROLES })
+  requireAuth({ role: matrix.asset.read })
   return db.cmdb.findUnique({
     where: { id },
   })
 }
 
 export const createCmdb = ({ input }) => {
-  requireAuth({ role: CREATE_ASSET_ROLES })
+  requireAuth({ role: matrix.asset.create })
   return db.cmdb.create({
     data: input,
   })
 }
 
 export const updateCmdb = ({ id, input }) => {
-  requireAuth({ role: UPDATE_ASSET_ROLES })
+  requireAuth({ role: matrix.asset.update })
   return db.cmdb.update({
     data: input,
     where: { id },
@@ -38,7 +32,7 @@ export const updateCmdb = ({ id, input }) => {
 }
 
 export const deleteCmdb = ({ id }) => {
-  requireAuth({ role: DELETE_ASSET_ROLES })
+  requireAuth({ role: matrix.asset.delete })
   return db.cmdb.delete({
     where: { id },
   })

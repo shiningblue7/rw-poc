@@ -25,11 +25,42 @@ This project will use the following features.
 
 | Role        | Operations                                        |
 | ----------- | ------------------------------------------------- |
-| Admin       |	Create, Read, Update, Delete all                  |
-| Task Doer	  | Create, Read all the Tasks, Update open Tasks     |
-| Task Admin	| Update solved Tasks, Delete all the Tasks         |
-| Asset Doer	| Create, Read all the Assets, Update active Assets |
-| Asset Admin |	Create, Read, Update, Delete all the Assets       |
+| Admin       | Create, Read, Update, Delete all                  |
+| Task Doer   | Create, Read all the Tasks, Update open Tasks     |
+| Task Admin  | Update solved Tasks, Delete all the Tasks         |
+| Asset Doer  | Create, Read all the Assets, Update active Assets |
+| Asset Admin | Create, Read, Update, Delete all the Assets       |
+
+(see ./api/src/lib/roles.js)
+```js
+export const matrix = {
+  ticket:   {
+    create: ['task_doer', 'task_admin',                                            'admin'],
+    read:   ['task_doer', 'task_admin', 'asset_doer', 'asset_admin',               'admin'],
+    update: ['task_doer', 'task_admin',                                            'admin'],
+    delete: [             'task_admin',                                            'admin']
+  },
+  asset: {
+    create: [                           'asset_doer', 'asset_admin',               'admin'],
+    read:   [                           'asset_doer', 'asset_admin',               'admin'],
+    update: [                           'asset_doer', 'asset_admin',               'admin'],
+    delete: [                                         'asset_admin',               'admin']
+  },
+  user: {
+    create: [                                                        'user_admin', 'admin'],
+    read:   ['task_doer', 'task_admin', 'asset_doer', 'asset_admin', 'user_admin', 'admin'],
+    update: [                                                        'user_admin', 'admin'],
+    delete: [                                                        'user_admin', 'admin']
+  },
+  userRole: {
+    create: [                                                        'user_admin', 'admin'],
+    read:   ['task_doer', 'task_admin', 'asset_doer', 'asset_admin', 'user_admin', 'admin'],
+    update: [                                                        'user_admin', 'admin'],
+    delete: [                                                        'user_admin', 'admin']
+  }
+}
+```
+
 
 Implement the Roles/Personas from the above.
   - [Role Based Access from database](https://redwoodjs.com/docs/authentication#roles-from-a-database)
@@ -63,16 +94,16 @@ You know, to have things to track against
 
   </span>
 
-  | Status  | When   | Action | Why (example use case) |
-  | ------- | ------ | ------ | ---------------------- |
-  | Working | Before | Create | Verify duplicate ticket isn't logged |
+  | Status  | When   | Action | Why (example use case)                                                |
+  | ------- | ------ | ------ | --------------------------------------------------------------------- |
+  | Working | Before | Create | Verify duplicate ticket isn't logged                                  |
   |         | Before | Read   | Remove senstive data / Logging someone tried to read sensitve records |
-  |         | Before | Update | Disallow updating of specific fields |
-  |         | Before | Delete | Store deleted record in temporary table to allow restore |
-  | Working | After  | Create | Datalookup, e.g. assigned to availablity or Sending a email |
-  |         | After  | Read   | Logging someone read a sensitve record |
-  |         | After  | Update | Datalookup, e.g. assigned to availablity or Sending a email |
-  |         | After  | Delete | Email that data has been purged |
+  |         | Before | Update | Disallow updating of specific fields                                  |
+  |         | Before | Delete | Store deleted record in temporary table to allow restore              |
+  | Working | After  | Create | Datalookup, e.g. assigned to availablity or Sending a email           |
+  |         | After  | Read   | Logging someone read a sensitve record                                |
+  |         | After  | Update | Datalookup, e.g. assigned to availablity or Sending a email           |
+  |         | After  | Delete | Email that data has been purged                                       |
 
   </details>
 

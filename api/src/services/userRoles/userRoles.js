@@ -1,6 +1,10 @@
 import { db } from 'src/lib/db'
+import { requireAuth } from 'src/lib/auth'
+import { matrix } from 'src/lib/roles'
+
 
 export const userRoles = () => {
+  requireAuth({ role: matrix.userRole.read })
   return db.userRole.findMany()
 }
 
