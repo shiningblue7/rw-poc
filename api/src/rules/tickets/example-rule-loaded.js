@@ -1,23 +1,19 @@
 import * as util from 'src/lib/util'
 import { logger } from 'src/lib/logger'
 module.exports = {
-  command: function (current) {
+  command: function (input) {
     try {
-      if (current.userId === 2) {
-        current.title += ' - Jace ';
-        var d= new Date();
-
-        current.title += `${d.toLocaleDateString()} ${d.toLocaleTimeString()} `
-        current.title += Intl.DateTimeFormat().resolvedOptions().timeZone
+      if (input.title.toLowerCase().includes('jace')) {
+        input.title = input.title.replace(/jace/gmi, 'Jace');
       }
     } catch (e) {
       logger.error(e);
     }
-    return current;
+    return input;
   },
   active: true,
   order: 10,
-  title: "make jace's name correct",
+  title: "Correct jace's name",
   when: "before",
   file: __filename
 }
