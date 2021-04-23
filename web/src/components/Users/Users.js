@@ -1,6 +1,6 @@
 import { useMutation, useFlash } from '@redwoodjs/web'
 import { Link, routes } from '@redwoodjs/router'
-
+import { useAuth } from '@redwoodjs/auth'
 import { QUERY } from 'src/components/UsersCell'
 
 const DELETE_USER_MUTATION = gql`
@@ -55,7 +55,7 @@ const UsersList = ({ users }) => {
       deleteUser({ variables: { id } })
     }
   }
-
+  const { logIn, logOut, isAuthenticated, currentUser, hasRole } = useAuth()
   return (
     <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
@@ -77,6 +77,8 @@ const UsersList = ({ users }) => {
               <td>{truncate(user.name)}</td>
               <td>
                 <nav className="rw-table-actions">
+
+                {hasRole(currentUser?.matrix?.user?.read) &&
                   <Link
                     to={routes.user({ id: user.id })}
                     title={'Show user ' + user.id + ' detail'}
@@ -84,6 +86,9 @@ const UsersList = ({ users }) => {
                   >
                     Show
                   </Link>
+}
+
+{hasRole(currentUser?.matrix?.user?.update) &&
                   <Link
                     to={routes.editUser({ id: user.id })}
                     title={'Edit user ' + user.id}
@@ -91,6 +96,9 @@ const UsersList = ({ users }) => {
                   >
                     Edit
                   </Link>
+}
+
+{hasRole(currentUser?.matrix?.user?.delete) &&
                   <a
                     href="#"
                     title={'Delete user ' + user.id}
@@ -99,6 +107,7 @@ const UsersList = ({ users }) => {
                   >
                     Delete
                   </a>
+}
                 </nav>
               </td>
             </tr>
