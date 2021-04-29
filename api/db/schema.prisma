@@ -6,7 +6,6 @@ datasource DS {
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = "native"
-  previewFeatures = ["createMany"]
 }
 
 model Post {
@@ -25,26 +24,57 @@ model Contact {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  userName String   @unique
-  email    String   @unique
-  name     String
-  Ticket   Ticket[]
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  userName   String       @unique
+  email      String       @unique
+  name       String
+  Ticket     Ticket[]
+  TicketNote TicketNote[]
+  UserRole   UserRole[]
 }
 
 model Ticket {
-  id     Int     @id @default(autoincrement())
-  number String  @unique
-  title  String?
-  User   User?   @relation(fields: [userId], references: [id])
-  userId Int?
-  Cmbd   Cmdb?   @relation(fields: [cmdbId], references: [id])
-  cmdbId Int?
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  number     String       @unique
+  title      String?
+  state      String?      @default("new")
+  priority   String?      @default("low")
+  impact     String?      @default("low")
+  urgency    String?      @default("low")
+  User       User?        @relation(fields: [userId], references: [id])
+  userId     Int?
+  TicketNote TicketNote[]
+}
+
+model TicketNote {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  field     String
+  value     String
+  Ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  ticketId  Int
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
 model Cmdb {
   id     Int     @id @default(autoincrement())
   number String  @unique
   title  String?
-  Ticket   Ticket[]
+}
+
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  name      String
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+
+  @@unique([name, userId])
 }

@@ -1,6 +1,6 @@
 import { useMutation, useFlash } from '@redwoodjs/web'
 import { Link, routes, navigate } from '@redwoodjs/router'
-
+import { useAuth } from '@redwoodjs/auth'
 import { QUERY } from 'src/components/TicketsCell'
 
 const DELETE_TICKET_MUTATION = gql`
@@ -45,7 +45,7 @@ const Ticket = ({ ticket }) => {
       deleteTicket({ variables: { id } })
     }
   }
-
+  const { logIn, logOut, isAuthenticated, currentUser, hasRole } = useAuth()
   return (
     <>
       <div className="rw-segment">
@@ -76,12 +76,15 @@ const Ticket = ({ ticket }) => {
         </table>
       </div>
       <nav className="rw-button-group">
+      {hasRole(currentUser?.matrix?.ticket?.update) &&
         <Link
           to={routes.editTicket({ id: ticket.id })}
           className="rw-button rw-button-blue"
         >
           Edit
         </Link>
+}
+{hasRole(currentUser?.matrix?.ticket?.delete) &&
         <a
           href="#"
           className="rw-button rw-button-red"
@@ -89,6 +92,7 @@ const Ticket = ({ ticket }) => {
         >
           Delete
         </a>
+}
       </nav>
     </>
   )

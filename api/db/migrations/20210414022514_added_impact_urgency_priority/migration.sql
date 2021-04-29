@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Ticket" ADD COLUMN     "priority" INTEGER DEFAULT 10,
+ADD COLUMN     "impact" INTEGER DEFAULT 10,
+ADD COLUMN     "urgency" INTEGER DEFAULT 10;

@@ -39,13 +39,13 @@ async function main() {
   //console.info('No data to seed. See api/db/seed.js for info.')
   const resultUsers = await db.user.createMany({
     data: [
-      { email: "demotaskdoer@tskr.io", userName: "demotaskdoer", name: "Tom Tillamook"},
-      { email: "demotaskadmin@tskr.io", userName: "demotaskadmin", name: "Tory Taylor"},
-      { email: "demoassetdoer@tskr.io", userName: "demoassetdoer", name: "Adam Anderson"},
-      { email: "demoassetadmin@tskr.io", userName: "demoassetadmin", name: "Anna Abbott"},
-      { email: "demoadmin@tskr.io", userName: "demoadmin", name: "Ali Armstrong"},
-      { email: "kevin@example.com", userName: "kevin", name: "Kevin K" },
-      { email: "jace@benson.run", userName: "jacebenson", name: "Jace B" },
+      { id: 1, email: "demotaskdoer@tskr.io", userName: "demotaskdoer", name: "Tom Tillamook"},
+      { id: 2, email: "demotaskadmin@tskr.io", userName: "demotaskadmin", name: "Tory Taylor"},
+      { id: 3, email: "demoassetdoer@tskr.io", userName: "demoassetdoer", name: "Adam Anderson"},
+      { id: 4, email: "demoassetadmin@tskr.io", userName: "demoassetadmin", name: "Anna Abbott"},
+      { id: 5, email: "demoadmin@tskr.io", userName: "demoadmin", name: "Ali Armstrong"},
+      { id: 6, email: "kevin@example.com", userName: "kevin", name: "Kevin K" },
+      { id: 7, email: "jace@benson.run", userName: "jacebenson", name: "Jace B" },
     ],
     skipDuplicates: true, // Supported with Postgres database
   })
@@ -66,6 +66,21 @@ async function main() {
     skipDuplicates: true, // Supported with Postgres database
   })
   console.log(`Created ${resultTickets.count} tickets!`)
+
+  const resultUserRoles = await db.userRole.createMany({
+    data: [
+      { name: "admin", userId: 7 },
+      { name: "task_doer", userId: 1 },
+      { name: "task_admin", userId: 2 },
+      { name: "asset_doer", userId: 3 },
+      { name: "asset_admin", userId: 4 },
+      { name: "user_admin", userId: 4 },
+      { name: "user_doer", userId: 4 }
+    ],
+    skipDuplicates: true, // Supported with Postgres database
+  })
+
+  console.log(`Created ${resultUserRoles.count} UserRoles!`)
 }
 
 main()

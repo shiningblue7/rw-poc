@@ -1,6 +1,18 @@
 # Tskr
 
-A open source task and asset tracking tool.
+Tskr is a open source, task and asset tracking application built on [RedwoodJS](https://redwoodjs.com).  Imagine a low-cost task and asset tracking system where you define complex rules to execute the business needs you have — that's **Tskr**.
+
+Because RedwoodJS is the base of this project I'd be remiss if I didn't share the current disclaimer on their project here.
+
+> WARNING: RedwoodJS software has not reached a stable version 1.0 and should not be considered suitable for production use. In the "make it work; make it right; make it fast" paradigm, Redwood is in the later stages of the "make it work" phase. That said, your input can have a huge impact during this period, and we welcome your feedback and ideas! Check out the Redwood Community Forum to join in.
+
+We are an opinionated system.  We make the decisions so you don't have to.
+
+This project will use the following features.
+
+- Azure Active Directory for Authentication
+- Role Based Access Control within Tskr
+- Postgres (at your choice of provider)
 
 ## Features
 
@@ -11,13 +23,36 @@ A open source task and asset tracking tool.
   - Authentication via Azure
   - Roles that disctate access
 
-| Role        | Operations                                        |
-| ----------- | ------------------------------------------------- |
-| Admin       |	Create, Read, Update, Delete all                  |
-| Task Doer	  | Create, Read all the Tasks, Update open Tasks     |
-| Task Admin	| Create, Read, Update, Delete all the Tasks        |
-| Asset Doer	| Create, Read all the Assets, Update active Assets |
-| Asset Admin |	Create, Read, Update, Delete all the Assets       |
+(see ./api/src/lib/roles.js)
+```js
+export const matrix = {
+  ticket:   {
+    create: ['task_doer', 'task_admin',                                            'admin'],
+    read:   ['task_doer', 'task_admin', 'asset_doer', 'asset_admin',               'admin'],
+    update: ['task_doer', 'task_admin',                                            'admin'],
+    delete: [             'task_admin',                                            'admin']
+  },
+  asset: {
+    create: [                           'asset_doer', 'asset_admin',               'admin'],
+    read:   [                           'asset_doer', 'asset_admin',               'admin'],
+    update: [                           'asset_doer', 'asset_admin',               'admin'],
+    delete: [                                         'asset_admin',               'admin']
+  },
+  user: {
+    create: [                                                        'user_admin', 'admin'],
+    read:   ['task_doer', 'task_admin', 'asset_doer', 'asset_admin', 'user_admin', 'admin'],
+    update: [                                                        'user_admin', 'admin'],
+    delete: [                                                        'user_admin', 'admin']
+  },
+  userRole: {
+    create: [                                                        'user_admin', 'admin'],
+    read:   ['task_doer', 'task_admin', 'asset_doer', 'asset_admin', 'user_admin', 'admin'],
+    update: [                                                        'user_admin', 'admin'],
+    delete: [                                                        'user_admin', 'admin']
+  }
+}
+```
+
 
 Implement the Roles/Personas from the above.
   - [Role Based Access from database](https://redwoodjs.com/docs/authentication#roles-from-a-database)
@@ -51,20 +86,22 @@ You know, to have things to track against
 
   </span>
 
-  | Status  | When   | Action | Why (example use case) |
-  | ------- | ------ | ------ | ---------------------- |
-  | Working | Before | Create | Verify duplicate ticket isn't logged |
+  | Status  | When   | Action | Why (example use case)                                                |
+  | ------- | ------ | ------ | --------------------------------------------------------------------- |
+  | Working | Before | Create | Verify duplicate ticket isn't logged                                  |
   |         | Before | Read   | Remove senstive data / Logging someone tried to read sensitve records |
-  |         | Before | Update | Disallow updating of specific fields |
-  |         | Before | Delete | Store deleted record in temporary table to allow restore |
-  | Working | After  | Create | Datalookup, e.g. assigned to availablity or Sending a email |
-  |         | After  | Read   | Logging someone read a sensitve record |
-  |         | After  | Update | Datalookup, e.g. assigned to availablity or Sending a email |
-  |         | After  | Delete | Email that data has been purged |
+  |         | Before | Update | Disallow updating of specific fields                                  |
+  |         | Before | Delete | Store deleted record in temporary table to allow restore              |
+  | Working | After  | Create | Datalookup, e.g. assigned to availablity or Sending a email           |
+  |         | After  | Read   | Logging someone read a sensitve record                                |
+  |         | After  | Update | Datalookup, e.g. assigned to availablity or Sending a email           |
+  |         | After  | Delete | Email that data has been purged                                       |
 
   </details>
 
 ## Set up
+
+1.  Installing the repo
 
 Because this is uses the following you'll need to configure them.
 

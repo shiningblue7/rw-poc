@@ -2,7 +2,7 @@ import { useMutation, useFlash } from '@redwoodjs/web'
 import { Link, routes } from '@redwoodjs/router'
 
 import { QUERY } from 'src/components/TicketsCell'
-
+import { useAuth } from '@redwoodjs/auth'
 const DELETE_TICKET_MUTATION = gql`
   mutation DeleteTicketMutation($id: Int!) {
     deleteTicket(id: $id) {
@@ -12,6 +12,14 @@ const DELETE_TICKET_MUTATION = gql`
 `
 
 const MAX_STRING_LENGTH = 150
+
+const propercase = (text) =>{
+  text = text.toLowerCase().split(' ');
+  for (var i = 0; i < text.length; i++) {
+    text[i] = text[i].charAt(0).toUpperCase() + text[i].slice(1);
+  }
+  return text.join(' ');
+}
 
 const truncate = (text) => {
   let output = text
@@ -55,12 +63,15 @@ const TicketsList = ({ tickets }) => {
       deleteTicket({ variables: { id } })
     }
   }
+
+  const { logIn, logOut, isAuthenticated, currentUser, hasRole } = useAuth()
   return (
     <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
         <thead>
           <tr>
             <th>Number</th>
+            <th>State</th>
             <th>Title</th>
             <th>User</th>
             <th>&nbsp;</th>
@@ -70,10 +81,21 @@ const TicketsList = ({ tickets }) => {
           {tickets.map((ticket) => (
             <tr key={ticket.id}>
               <td>{truncate(ticket.number)}</td>
+              <td>{propercase(ticket.state)}</td>
               <td>{truncate(ticket.title)}</td>
-              <td><div title={truncate(ticket.userId)}>{truncate(ticket.User.name)}</div></td>
+              <td>
+                {ticket.userId && (
+                  <div title={truncate(ticket.userId)}>
+                  {truncate(ticket.User.name)}
+                </div>
+                )}
+                {!ticket.userId && (
+                  <div title=""></div>
+                )}
+              </td>
               <td>
                 <nav className="rw-table-actions">
+                {hasRole(currentUser?.matrix?.user?.read) &&
                   <Link
                     to={routes.ticket({ id: ticket.id })}
                     title={'Show ticket ' + ticket.id + ' detail'}
@@ -81,6 +103,8 @@ const TicketsList = ({ tickets }) => {
                   >
                     Show
                   </Link>
+}
+{hasRole(currentUser?.matrix?.user?.update) &&
                   <Link
                     to={routes.editTicket({ id: ticket.id })}
                     title={'Edit ticket ' + ticket.id}
@@ -88,6 +112,8 @@ const TicketsList = ({ tickets }) => {
                   >
                     Edit
                   </Link>
+}
+{hasRole(currentUser?.matrix?.user?.delete) &&
                   <a
                     href="#"
                     title={'Delete ticket ' + ticket.id}
@@ -96,6 +122,7 @@ const TicketsList = ({ tickets }) => {
                   >
                     Delete
                   </a>
+}
                 </nav>
               </td>
             </tr>

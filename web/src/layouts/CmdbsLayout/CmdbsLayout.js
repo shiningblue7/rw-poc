@@ -1,7 +1,8 @@
 import { Link, routes } from '@redwoodjs/router'
 import { Toaster } from '@redwoodjs/web/toast'
-
+import { useAuth } from '@redwoodjs/auth'
 const CmdbsLayout = (props) => {
+  const { logIn, logOut, isAuthenticated, currentUser, hasRole } = useAuth()
   return (
     <div className="rw-scaffold">
       <Toaster />
@@ -11,9 +12,11 @@ const CmdbsLayout = (props) => {
             Cmdbs
           </Link>
         </h1>
+      {hasRole(currentUser?.matrix?.asset?.create) &&
         <Link to={routes.newCmdb()} className="rw-button rw-button-green">
           <div className="rw-button-icon">+</div> New Cmdb
         </Link>
+}
       </header>
       <main className="rw-main">{props.children}</main>
     </div>

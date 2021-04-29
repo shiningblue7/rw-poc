@@ -180,3 +180,6 @@ aside > nav > ul {
   list-style: none;
   padding-left: unset;
 }
+fieldset {
+  border: none;
+}

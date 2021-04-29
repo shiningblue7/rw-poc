@@ -12,6 +12,10 @@ export const QUERY = gql`
       User {
         name
       }
+      state
+      impact
+      urgency
+      priority
     }
   }
 `

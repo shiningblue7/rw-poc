@@ -1,7 +1,7 @@
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 import { Link, routes } from '@redwoodjs/router'
-
+import { useAuth } from '@redwoodjs/auth'
 import { QUERY } from 'src/components/CmdbsCell'
 
 const DELETE_CMDB_MUTATION = gql`
@@ -56,6 +56,7 @@ const CmdbsList = ({ cmdbs }) => {
     }
   }
 
+  const { logIn, logOut, isAuthenticated, currentUser, hasRole } = useAuth()
   return (
     <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
@@ -75,6 +76,8 @@ const CmdbsList = ({ cmdbs }) => {
               <td>{truncate(cmdb.title)}</td>
               <td>
                 <nav className="rw-table-actions">
+
+            {hasRole(currentUser?.matrix?.asset?.read) &&
                   <Link
                     to={routes.cmdb({ id: cmdb.id })}
                     title={'Show cmdb ' + cmdb.id + ' detail'}
@@ -82,13 +85,17 @@ const CmdbsList = ({ cmdbs }) => {
                   >
                     Show
                   </Link>
+}
+            {hasRole(currentUser?.matrix?.asset?.update) &&
                   <Link
                     to={routes.editCmdb({ id: cmdb.id })}
                     title={'Edit cmdb ' + cmdb.id}
                     className="rw-button rw-button-small rw-button-blue"
                   >
                     Edit
-                  </Link>
+                  </Link>}
+
+            {hasRole(currentUser?.matrix?.asset?.delete) &&
                   <a
                     href="#"
                     title={'Delete cmdb ' + cmdb.id}
@@ -96,7 +103,7 @@ const CmdbsList = ({ cmdbs }) => {
                     onClick={() => onDeleteClick(cmdb.id)}
                   >
                     Delete
-                  </a>
+                  </a>}
                 </nav>
               </td>
             </tr>
