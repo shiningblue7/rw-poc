@@ -5,7 +5,6 @@ import { useAuth } from '@redwoodjs/auth'
 
 const Routes = () => {
   const { hasRole, currentUser } = useAuth()
-console.log('routes currentUser', currentUser?.matrix);
   return (
     <Router>
       <Set wrap={StandardLayout}>
@@ -54,8 +53,8 @@ console.log('routes currentUser', currentUser?.matrix);
         </Private>
       </Private>
 
-      <Route path="/about" page={AboutPage} name="about" />
-      <Route path="/" page={HomePage} name="home" />
+      <Route path="/about" page={AboutPage} name="about" prerender />
+      <Route path="/" page={HomePage} name="home" prerender />
       <Route notfound page={NotFoundPage} />
       </Set>
     </Router>

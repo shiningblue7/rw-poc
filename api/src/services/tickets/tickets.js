@@ -14,11 +14,16 @@ export const tickets = () => {
   return db.ticket.findMany()
 }
 
-export const ticket = ({ id }) => {
+export const ticket = async ({ id }) => {
   requireAuth({ role: matrix.ticket.read })
-  let result = db.ticket.findUnique({
+  let result = await db.ticket.findUnique({
     where: { id },
+    include: {
+      TicketNote: true,
+    },
   })
+
+  logger.info(`read ticket`, result);
   return result
 }
 
@@ -66,6 +71,36 @@ export const createTicket = async ({ input }) => {
   return update;
 }
 
+export const UpdateTicketWithNotes = async ({id, input}) => {
+  let returnObj = {}
+  //requireAuth({ role: matrix.ticket.update })
+  // read record first to get "previous"
+  let previous = await db.ticket.findUnique({
+    where: { id },
+  })
+  //return result
+  logger.info('previous', previous)
+  logger.info('input', input)
+  if (previous.state === 'solved') {
+    //requireAuth({ role: UPDATE_TASK_SOLVED_ROLES })
+    returnObj = db.ticket.update({
+      data: input,
+      where: { id },
+      include: {
+        TicketNote: [JSON.parse(input.notes)]//expects a array for each journaled field like so
+        // [{ field, value, ticketId, userId }]
+      }
+    })
+  } else {
+    returnObj = db.ticket.update({
+      data: input,
+      where: { id },
+    })
+  }
+  return returnObj;
+}
+
+
 export const updateTicket = async ({ id, input }) => {
   let returnObj = {}
   requireAuth({ role: matrix.ticket.update })
@@ -74,7 +109,7 @@ export const updateTicket = async ({ id, input }) => {
     where: { id },
   })
   //return result
-  console.log('previous', previous)
+  logger.info('previous', previous)
   if (previous.state === 'solved') {
     //requireAuth({ role: UPDATE_TASK_SOLVED_ROLES })
     returnObj = db.ticket.update({
@@ -94,6 +129,7 @@ export const deleteTicket = ({ id }) => {
   requireAuth({ role: matrix.ticket.delete })
   return db.ticket.delete({
     where: { id },
+    //TODO: add includes to delete TicketNotes
   })
 }
 
