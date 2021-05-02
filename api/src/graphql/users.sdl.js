@@ -5,6 +5,7 @@ export const schema = gql`
     email: String!
     name: String!
     Ticket: [Ticket]!
+    UserRole: [UserRole]
   }
 
   type Query {

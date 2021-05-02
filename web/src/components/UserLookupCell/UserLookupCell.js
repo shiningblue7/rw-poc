@@ -7,6 +7,9 @@ export const QUERY = gql`
     users {
       id
       name
+      UserRole {
+        name
+      }
     }
   }
 `
@@ -27,28 +30,31 @@ export const Empty = () => {
 
 export const Success = ({ defaultValue, users }) => {
   //return <Users users={users} />
-  var options = users.map((user)=>{
-        return <option key={user.id} value={user.id}>{user['name']}</option>
-      })
+  var options = users.map((user) => {
+    let cuteRoles = user.UserRole.map((role) => {
+      return role.name
+    })
+    return <option key={user.id} value={user.id}>{user['name']} ({cuteRoles.toString()})</option>
+  })
   return (<>
-        <Label
-          name="userId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Assigned to
+    <Label
+      name="userId"
+      className="rw-label"
+      errorClassName="rw-label rw-label-error"
+    >
+      Assigned to
         </Label>
 
-        <SelectField
-          name="userId"
-          defaultValue={defaultValue}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        >
-          <option value="">Pick One</option>
-          {options}
-        </SelectField>
-    </>
+    <SelectField
+      name="userId"
+      defaultValue={defaultValue}
+      className="rw-input"
+      errorClassName="rw-input rw-input-error"
+      validation={{ required: true }}
+    >
+      <option value="">Pick One</option>
+      {options}
+    </SelectField>
+  </>
   )
 }

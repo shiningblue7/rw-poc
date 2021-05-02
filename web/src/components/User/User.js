@@ -77,24 +77,24 @@ const User = ({ user }) => {
       </div>
       <nav className="rw-button-group">
 
-      {hasRole(currentUser?.matrix?.ticket?.update) &&
-        <Link
-          to={routes.editUser({ id: user.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
+        {hasRole(currentUser?.matrix?.user?.update) &&
+          <Link
+            to={routes.editUser({ id: user.id })}
+            className="rw-button rw-button-blue"
+          >
+            Edit
         </Link>
-}
+        }
 
-{hasRole(currentUser?.matrix?.ticket?.delete) &&
-        <a
-          href="#"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(user.id)}
-        >
-          Delete
+        {hasRole(currentUser?.matrix?.ticket?.delete) &&
+          <a
+            href="#"
+            className="rw-button rw-button-red"
+            onClick={() => onDeleteClick(user.id)}
+          >
+            Delete
         </a>
-}
+        }
       </nav>
     </>
   )

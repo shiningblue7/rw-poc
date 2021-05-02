@@ -183,3 +183,7 @@ aside > nav > ul {
 fieldset {
   border: none;
 }
+
+.rw-segment-header {
+  display: block;
+}
