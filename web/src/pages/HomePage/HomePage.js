@@ -74,6 +74,8 @@ const HomePage = () => {
 
         </ul>
       </li>
+      <li>Responsive Email templating via <a href="https://mjml.io">MJML</a> </li>
+      <li>Mailgun integrated as the email service provider.</li>
       <li><p>Created with the <a href="https://www.netlify.com/jamstack/">JAMStack</a> in mind, this is a great way to spin up something that has low risk, low cost, and a lot of potiental upsides.</p></li>
     </ul>
     <h2>I'm in, where do I start?</h2>
