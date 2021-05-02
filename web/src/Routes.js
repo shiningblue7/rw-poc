@@ -54,9 +54,9 @@ console.log('routes currentUser', currentUser?.matrix);
         </Private>
       </Private>
 
-      <Route path="/about" page={AboutPage} name="about" />
-      <Route path="/" page={HomePage} name="home" />
-      <Route notfound page={NotFoundPage} />
+      <Route path="/about" page={AboutPage} name="about" prerender />
+      <Route path="/" page={HomePage} name="home" prerender />
+      <Route notfound page={NotFoundPage} prerender />
       </Set>
     </Router>
   )
