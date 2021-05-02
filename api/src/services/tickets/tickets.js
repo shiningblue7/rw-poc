@@ -10,14 +10,16 @@ export const tickets = () => {
   return db.ticket.findMany()
 }
 
-export const ticket = ({ id }) => {
+export const ticket = async ({ id }) => {
   requireAuth({ role: matrix.ticket.read })
-  let result = db.ticket.findUnique({
+  let result = await db.ticket.findUnique({
     where: { id },
     include: {
       User: true
     }
   })
+
+  logger.info(`read ticket`, result);
   return result
 }
 
@@ -116,6 +118,7 @@ export const deleteTicket = async ({ id }) => {
     logger.info(`Starting After Delete Rule "${rule.title}" ${rule.order}`)
     rule.command(deleteTicket, previous);
     logger.info(`Ending   After Delete Rule "${rule.title}"`)
+
   })
   return deleteTicket;
 }
