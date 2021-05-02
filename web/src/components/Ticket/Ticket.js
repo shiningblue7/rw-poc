@@ -31,6 +31,13 @@ const checkboxInputTag = (checked) => {
   return <input type="checkbox" checked={checked} disabled />
 }
 
+const propercase = (text) => {
+  text = text.toLowerCase().split(' ');
+  for (var i = 0; i < text.length; i++) {
+    text[i] = text[i].charAt(0).toUpperCase() + text[i].slice(1);
+  }
+  return text.join(' ');
+}
 const Ticket = ({ ticket }) => {
   const { addMessage } = useFlash()
   const [deleteTicket] = useMutation(DELETE_TICKET_MUTATION, {
@@ -51,15 +58,11 @@ const Ticket = ({ ticket }) => {
       <div className="rw-segment">
         <header className="rw-segment-header">
           <h2 className="rw-heading rw-heading-secondary">
-            Ticket {ticket.id} Detail
+            Ticket {ticket.number} Detail
           </h2>
         </header>
         <table className="rw-table">
           <tbody>
-            <tr>
-              <th>Id</th>
-              <td>{ticket.id}</td>
-            </tr>
             <tr>
               <th>Number</th>
               <td>{ticket.number}</td>
@@ -69,30 +72,46 @@ const Ticket = ({ ticket }) => {
               <td>{ticket.title}</td>
             </tr>
             <tr>
-              <th>User id</th>
-              <td>{ticket.userId}</td>
+              <th>Impact</th>
+              <td>{propercase(ticket.impact)}</td>
+            </tr>
+            <tr>
+              <th>Urgency</th>
+              <td>{propercase(ticket.urgency)}</td>
+            </tr>
+            <tr>
+              <th>Priority</th>
+              <td>{propercase(ticket.priority)}</td>
+            </tr>
+            <tr>
+              <th>Title</th>
+              <td>{ticket.title}</td>
+            </tr>
+            <tr>
+              <th>Assigned To</th>
+              <td>{ticket.User.name}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <nav className="rw-button-group">
-      {hasRole(currentUser?.matrix?.ticket?.update) &&
-        <Link
-          to={routes.editTicket({ id: ticket.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
+        {hasRole(currentUser?.matrix?.ticket?.update) &&
+          <Link
+            to={routes.editTicket({ id: ticket.id })}
+            className="rw-button rw-button-blue"
+          >
+            Edit
         </Link>
-}
-{hasRole(currentUser?.matrix?.ticket?.delete) &&
-        <a
-          href="#"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(ticket.id)}
-        >
-          Delete
+        }
+        {hasRole(currentUser?.matrix?.ticket?.delete) &&
+          <a
+            href="#"
+            className="rw-button rw-button-red"
+            onClick={() => onDeleteClick(ticket.id)}
+          >
+            Delete
         </a>
-}
+        }
       </nav>
     </>
   )

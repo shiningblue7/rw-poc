@@ -11,6 +11,9 @@ export const QUERY = gql`
       impact
       urgency
       priority
+      User {
+        name
+      }
     }
   }
 `

@@ -4,10 +4,6 @@ import * as util from 'src/lib/util'
 import { logger } from 'src/lib/logger'
 import { matrix } from 'src/lib/roles'
 import rules from 'src/rules/tickets/**.{js,ts}'
-let beforeRulesArr = util.loadRules(rules, "before")
-let afterRulesArr = util.loadRules(rules, "after")
-
-//requireAuth({ role: READ_TASK_ROLES })
 
 export const tickets = () => {
   requireAuth({ role: matrix.ticket.read })
@@ -19,8 +15,8 @@ export const ticket = async ({ id }) => {
   let result = await db.ticket.findUnique({
     where: { id },
     include: {
-      TicketNote: true,
-    },
+      User: true
+    }
   })
 
   logger.info(`read ticket`, result);
@@ -28,7 +24,6 @@ export const ticket = async ({ id }) => {
 }
 
 export const createTicket = async ({ input }) => {
-
   requireAuth({ role: matrix.ticket.create })
   var lastTicket = await db.ticket.findFirst({ orderBy: [{ number: 'desc' }], })
   if (lastTicket) {
@@ -38,99 +33,94 @@ export const createTicket = async ({ input }) => {
   } else {
     input.number = '1000'
   }
-  beforeRulesArr.forEach((rule) => {
-    logger.info(`Starting Before ${rule.title} ${rule.order}`)
-    let previous = JSON.parse(JSON.stringify(input))
-    rule.command(input);
-    if (previous !== input) {
-      for (var prop in input) {
-        if (previous[prop] !== input[prop]) {
-          logger.info(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
-        }
-      }
+  let beforeCreateRulesArr = util.loadRules(rules, "before", "create")
+  beforeCreateRulesArr.forEach((rule) => {
+    logger.info(`Starting Before Create Rule "${rule.title}" ${rule.order}`)
+    rule.command(input, null);
+    for (var prop in input) {
+      logger.info(`  ${prop} "${input[prop]}"=>"${input[prop]}"`)
     }
-    logger.info(`Ending Before ${rule.title}`)
+    logger.info(`Ending Before Create Rule "${rule.title}"`)
   })
-  let update = db.ticket.create({
+  let create = db.ticket.create({
     data: input,
   })
-  afterRulesArr.forEach((rule) => {
-    logger.info(`Starting After ${rule.title} ${rule.order}`)
-    let previous = JSON.stringify(input)
-    previous = JSON.parse(previous)
-    rule.command(input);
+
+  let afterCreateRulesArr = util.loadRules(rules, "after", "create")
+  afterCreateRulesArr.forEach((rule) => {
+    logger.info(`Starting After Create Rule "${rule.title}" ${rule.order}`)
+    rule.command(create, null);
+    logger.info(`Ending After Create Rule "${rule.title}"`)
+  })
+  return create;
+}
+
+export const updateTicket = async ({ id, input }) => {
+  requireAuth({ role: matrix.ticket.update })
+  let previous = await db.ticket.findUnique({
+    where: { id },
+    include: {
+      User: true
+    }
+  })
+  let beforeUpdateRulesArr = util.loadRules(rules, "before", "update")
+  beforeUpdateRulesArr.forEach((rule) => {
+    logger.info(`Starting Before Update Rule "${rule.title}" ${rule.order}`)
+    rule.command(input, previous);
     if (previous !== input) {
       for (var prop in input) {
         if (previous[prop] !== input[prop]) {
-          logger.info(`${prop} "${previous[prop]}"=>"${input[prop]}"`)
+          logger.info(`  ${prop} "${previous[prop]}"=>"${input[prop]}"`)
         }
       }
     }
-    logger.info(`Ending After ${rule.title}`)
+    logger.info(`Ending   Before Update Rule "${rule.title}"`)
+  })
+
+  let update = await db.ticket.update({
+    data: input,
+    where: { id },
+    include: {
+      User: true
+    }
+  })
+  let afterUpdateRulesArr = util.loadRules(rules, "after", "update")
+  afterUpdateRulesArr.forEach((rule) => {
+    logger.info(`Starting After Update Rule "${rule.title}" ${rule.order}`)
+    rule.command(update, previous);
+    logger.info(`Ending   After Update Rule "${rule.title}"`)
   })
   return update;
 }
 
-export const UpdateTicketWithNotes = async ({id, input}) => {
-  let returnObj = {}
-  //requireAuth({ role: matrix.ticket.update })
-  // read record first to get "previous"
-  let previous = await db.ticket.findUnique({
-    where: { id },
-  })
-  //return result
-  logger.info('previous', previous)
-  logger.info('input', input)
-  if (previous.state === 'solved') {
-    //requireAuth({ role: UPDATE_TASK_SOLVED_ROLES })
-    returnObj = db.ticket.update({
-      data: input,
-      where: { id },
-      include: {
-        TicketNote: [JSON.parse(input.notes)]//expects a array for each journaled field like so
-        // [{ field, value, ticketId, userId }]
-      }
-    })
-  } else {
-    returnObj = db.ticket.update({
-      data: input,
-      where: { id },
-    })
-  }
-  return returnObj;
-}
-
-
-export const updateTicket = async ({ id, input }) => {
-  let returnObj = {}
-  requireAuth({ role: matrix.ticket.update })
-  // read record first to get "previous"
-  let previous = await db.ticket.findUnique({
-    where: { id },
-  })
-  //return result
-  logger.info('previous', previous)
-  if (previous.state === 'solved') {
-    //requireAuth({ role: UPDATE_TASK_SOLVED_ROLES })
-    returnObj = db.ticket.update({
-      data: input,
-      where: { id },
-    })
-  } else {
-    returnObj = db.ticket.update({
-      data: input,
-      where: { id },
-    })
-  }
-  return returnObj;
-}
-
-export const deleteTicket = ({ id }) => {
+export const deleteTicket = async ({ id }) => {
   requireAuth({ role: matrix.ticket.delete })
-  return db.ticket.delete({
+  let previous = await db.ticket.findUnique({
     where: { id },
-    //TODO: add includes to delete TicketNotes
   })
+
+  let beforeDeleteRulesArr = util.loadRules(rules, "before", "delete")
+  beforeDeleteRulesArr.forEach((rule) => {
+    logger.info(`Starting Before Delete Rule "${rule.title}" ${rule.order}`)
+    logger.info(`Deleting ${JSON.stringify(previous, '', ' ')}`)
+    rule.command(null, previous);//
+    logger.info(`Ending   Before Delete Rule "${rule.title}"`)
+  })
+
+  let deleteTicket = db.ticket.delete({
+    where: { id },
+    include: {
+      User: true
+    }
+  })
+  let afterDeleteRulesArr = util.loadRules(rules, "after", "delete")
+  afterDeleteRulesArr.forEach((rule) => {
+    logger.info(`Starting After Delete Rule "${rule.title}" ${rule.order}`)
+    rule.command(deleteTicket, previous);
+    logger.info(`Ending   After Delete Rule "${rule.title}"`)
+
+  })
+  return deleteTicket;
 }
 
 export const Ticket = {
