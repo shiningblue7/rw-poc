@@ -17,8 +17,6 @@ const azureActiveDirectoryClient = new UserAgentApplication({
     postLogoutRedirectUri: process.env.AZURE_ACTIVE_DIRECTORY_LOGOUT_REDIRECT_URI,
   }
 })
-
-console.log(azureActiveDirectoryClient);
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <AuthProvider client={azureActiveDirectoryClient} type="azureActiveDirectory">

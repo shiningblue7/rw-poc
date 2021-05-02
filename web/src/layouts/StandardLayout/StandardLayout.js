@@ -3,7 +3,6 @@ import { useAuth } from '@redwoodjs/auth'
 
 const StandardLayout = ({ children }) => {
   const { logIn, logOut, isAuthenticated, currentUser, hasRole } = useAuth()
-  console.log(currentUser)
   return (
     <>
       <header>
