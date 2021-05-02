@@ -55,7 +55,8 @@ const Routes = () => {
 
       <Route path="/about" page={AboutPage} name="about" prerender />
       <Route path="/" page={HomePage} name="home" prerender />
-      <Route notfound page={NotFoundPage} />
+      <Route notfound page={NotFoundPage} prerender />
+
       </Set>
     </Router>
   )
