@@ -47,16 +47,9 @@ const Routes = () => {
         </Private>
       </Private>
 
-<<<<<<< HEAD
-      <Route path="/about" page={AboutPage} name="about" prerender />
-      <Route path="/" page={HomePage} name="home" prerender />
-      <Route notfound page={NotFoundPage} prerender />
-
-=======
       <Route path="/about" page={AboutPage} name="about" />
       <Route path="/" page={HomePage} name="home" />
       <Route notfound page={NotFoundPage} />
->>>>>>> upstream/main
       </Set>
     </Router>
   )
