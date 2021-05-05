@@ -8,6 +8,14 @@ export const userRoles = () => {
   return db.userRole.findMany()
 }
 
+
+export const createUserRole = ({ input }) => {
+  //requireAuth()
+  return db.userRole.create({
+    data: input,
+  })
+}
+
 export const UserRole = {
   User: (_obj, { root }) =>
     db.userRole.findUnique({ where: { id: root.id } }).User(),

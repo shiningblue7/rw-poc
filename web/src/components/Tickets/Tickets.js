@@ -95,7 +95,7 @@ const TicketsList = ({ tickets }) => {
               </td>
               <td>
                 <nav className="rw-table-actions">
-                {hasRole(currentUser?.matrix?.user?.read) &&
+                {hasRole(currentUser?.matrix?.ticket?.read) &&
                   <Link
                     to={routes.ticket({ id: ticket.id })}
                     title={'Show ticket ' + ticket.id + ' detail'}
@@ -104,7 +104,7 @@ const TicketsList = ({ tickets }) => {
                     Show
                   </Link>
 }
-{hasRole(currentUser?.matrix?.user?.update) &&
+{hasRole(currentUser?.matrix?.ticket?.update) &&
                   <Link
                     to={routes.editTicket({ id: ticket.id })}
                     title={'Edit ticket ' + ticket.id}
@@ -113,7 +113,7 @@ const TicketsList = ({ tickets }) => {
                     Edit
                   </Link>
 }
-{hasRole(currentUser?.matrix?.user?.delete) &&
+{hasRole(currentUser?.matrix?.ticket?.delete) &&
                   <a
                     href="#"
                     title={'Delete ticket ' + ticket.id}
